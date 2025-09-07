@@ -9,7 +9,7 @@
     "dev": "nodemon --ext ts,js,ejs,json,html --watch . --watch views --watch public --watch './**/*.ts' --exec ts-node app.ts",
     "build": "tsc",
     "predeploy": "rm -r dist && pnpm build && git add . && git commit -m 'deployed' ",
-    "deploy": "rm -r dist && pnpm build && git add . && git commit -m 'deployed' && git push -u origin main"
+    "deploy": "git push -u origin main"
   },
   "keywords": [],
   "author": "",

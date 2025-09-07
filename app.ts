@@ -4,9 +4,9 @@ import { errorHandler } from "./middleware/errorHandler";
 import { notFoundHandler } from "./middleware/notFoundHandler";
 import partials from "express-partials";
 import cookieParser from "cookie-parser";
-import session from "express-session"
+import session from "express-session";
 import csrf from "csurf";
-import cors from "cors"
+import cors from "cors";
 import { getCsrfToken, authenticated, requireAuthentication, auth, logOut } from "./middleware/utilities";
 import flash from "connect-flash";
 import { config, sequelize } from "./config";
@@ -44,7 +44,7 @@ app.use(rateLimit({
   windowMs: 15 * 60 * 1000, //15mins  
   max: 100 // limit each ip to 100 request per WindowMs i.e 15min
 }));
-app.use(cors())
+app.use(cors());
 app.use(express.static(__dirname + '/public'));
 app.use(cookieParser(config.secret));
 app.use(session({
