@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const createHostelHandler_1 = require("../handlers/createHostelHandler");
+const getHostelsHandler_1 = require("../handlers/getHostelsHandler");
+const updateHostelHandler_1 = require("../handlers/updateHostelHandler");
+const getHostelHandler_1 = require("../handlers/getHostelHandler");
+const getHostelRoomsHandler_1 = require("../handlers/getHostelRoomsHandler");
+const searchHostelRoomsBooksHandler_1 = require("../handlers/searchHostelRoomsBooksHandler");
+const removeHostelHandler_1 = require("../handlers/removeHostelHandler");
+const hostelRouter = express_1.default.Router();
+hostelRouter.post("/", createHostelHandler_1.createHostelHandler);
+hostelRouter.get("/", getHostelsHandler_1.getHostelsHandler);
+hostelRouter.get("/:id", getHostelHandler_1.getHostelHandler);
+hostelRouter.patch("/:id", updateHostelHandler_1.updateHostelHandler);
+hostelRouter.delete("/:id", removeHostelHandler_1.removeHostelHandler);
+hostelRouter.get("/:id/rooms", getHostelRoomsHandler_1.getHostelRoomsHandler);
+hostelRouter.get("/search", searchHostelRoomsBooksHandler_1.searchHostelRoomsBookingHandler);
+exports.default = hostelRouter;
