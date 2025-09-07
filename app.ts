@@ -107,14 +107,19 @@ app.use(config.routes.bookings, bookingRouter);
 // transaction routes
 
 app.get(config.routes.home, (req: Request, res: Response) => {
-  // res.clearCookie('token');
-  res.render('index', {
-    title: 'Index',
-    cookie: JSON.stringify(req.cookies),
-    session: JSON.stringify(req.session),
-    signedCookie: JSON.stringify(req.signedCookies)
-  });
+  res.send('Welcome to Hostel Booking App Server');
 });
+
+// app.get(config.routes.home, (req: Request, res: Response) => {
+//   // res.cookie
+  // res.clearCookie('token');
+//   res.render('index', {
+//     title: 'Index',
+//     cookie: JSON.stringify(req.cookies),
+//     session: JSON.stringify(req.session),
+//     signedCookie: JSON.stringify(req.signedCookies)
+//   });
+// });
 
 app.get(config.routes.login, (req: Request, res: Response) => {
   res.render('login', { title: 'Login', message: req.flash('error') });
