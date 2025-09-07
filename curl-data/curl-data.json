@@ -1,0 +1,10 @@
+{
+    "checkIn": "06-09-2025",
+    "checkOut": "06-11-2025",
+    "totalPrice": 234000,
+    "status": "confirmed",
+    "paymentStatus": "paid",
+    "RoomId": 1,
+    "UserId": 1,
+    "_csrf":"SGlOLD6E-e5SNu2iHcE_luGcOhIBrBX-LTic"
+}
