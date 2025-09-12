@@ -18,11 +18,11 @@ Booking.init({
         type: sequelize_1.DataTypes.DATE
     },
     totalPrice: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.INTEGER,
         defaultValue: 0
     },
     paymentStatus: {
-        type: sequelize_1.DataTypes.NUMBER
+        type: sequelize_1.DataTypes.INTEGER
     },
     status: {
         type: sequelize_1.DataTypes.STRING

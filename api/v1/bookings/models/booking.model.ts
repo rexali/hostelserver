@@ -36,11 +36,11 @@ Booking.init({
         type: DataTypes.DATE
     },
     totalPrice: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         defaultValue: 0
     },
     paymentStatus: {
-        type: DataTypes.NUMBER
+        type: DataTypes.INTEGER
     },
     status: {
         type: DataTypes.STRING
