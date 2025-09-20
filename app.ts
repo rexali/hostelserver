@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import csrf from "csurf";
 import cors from "cors";
-import { getCsrfToken, authenticated, requireAuthentication, auth, logOut } from "./middleware/utilities";
+import { authenticated, requireAuthentication, auth, logOut } from "./middleware/utilities";
 import flash from "connect-flash";
 import { config, sequelize } from "./config";
 import authRouter from "./api/v1/auth/routes/user.routes";
@@ -21,6 +21,7 @@ import favoriteRouter from "./api/v1/favourites/routes/favorite.routes";
 import messageRouter from "./api/v1/messages/routes/message.routes";
 import notificationRouter from "./api/v1/notifications/routes/notification.routes";
 import bookingRouter from "./api/v1/bookings/routes/booking.routes";
+import reviewRouter from "./api/v1/reviews/routes/review.routes";
 
 declare module 'express-session' {
   interface SessionData {
@@ -118,12 +119,15 @@ app.use(config.routes.messages, messageRouter);
 app.use(config.routes.notifications, notificationRouter);
 // booking routes
 app.use(config.routes.bookings, bookingRouter); 
-// transaction routes
-
-app.get(config.routes.home, (req: Request, res: Response) => {
-  res.send('Welcome to Hostel Booking App Server');
-});
-
+// booking routes
+app.use(config.routes.bookings, bookingRouter); 
+// review routes
+app.use(config.routes.reviews, reviewRouter); 
+// server home
+app.get(config.routes.home, (req: Request, res: Response) => {res.send('Welcome to Hostel Booking App Server')});
+// check health route
+app.use(config.routes.healthz, (req: Request, res: Response)=>{res.send("I am healthy")}); 
+// get csrf token route
 app.get(config.routes.csrf, (req: Request, res: Response) => {
   // res.cookie('_csrf', csrf);
   res.json({ status: 'success', message: 'token generated', data: { _csrf: req.csrfToken()} });

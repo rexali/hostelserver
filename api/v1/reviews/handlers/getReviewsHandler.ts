@@ -2,7 +2,7 @@
 import { ReviewController } from "../controllers/review.controller"
 import { NextFunction, Request, Response } from "express";
 
-export async function getMessagesHandler(req: Request, res: Response, next: NextFunction) {
+export async function getReviewsHandler(req: Request, res: Response, next: NextFunction) {
     try {
         const page = req.query?.page as unknown as number ?? 1;
         const reviews = await ReviewController.getReviews(page);
