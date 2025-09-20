@@ -18,7 +18,8 @@ export const getPopularRooms = async function getPopularRooms() {
             },
             group: ["reviews.RoomId"],
             having: where(fn("AVG", col("reviews.rating")), ">=", 0.5),
-            order: [[fn("AVG", col("reviews.rating")), 'DESC']]
+            order: [[fn("AVG", col("reviews.rating")), 'DESC']],
+            limit:2
         });
 
         return popularRooms;

@@ -42,7 +42,7 @@ export class RoomService {
             const offset = (page - 1) * limit;
 
             let rooms = await Room.findAll({
-                limit,
+                limit:2,
                 offset,
                 attributes: {
                     include:

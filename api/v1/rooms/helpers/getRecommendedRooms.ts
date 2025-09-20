@@ -1,15 +1,15 @@
 import { Op } from "sequelize";
 import Room from "../models/room.model";
 
-export const getRecommendedRooms = async function getRecommendedRooms(term: string, location: string, page: number) {
+export const getRecommendedRooms = async function getRecommendedRooms(term: string) {
     try {
         let recommendedRooms = await Room.findAll({
             where: {
                 name: {
-                  [Op.iLike]: term
+                    [Op.iLike]: '%' + term + '%'
                 }
             },
-            limit: 4
+            limit: 2
         });
 
         return recommendedRooms;
