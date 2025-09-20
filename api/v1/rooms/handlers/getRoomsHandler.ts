@@ -5,6 +5,7 @@ import { NextFunction, Request, Response } from "express";
 export async function getRoomsHandler(req: Request, res: Response, next: NextFunction) {
     try {
         const rooms = await RoomService.getRooms();
+        let newRooms = rooms?.reverse();
         if (rooms !== null) {
             if (rooms?.length) {
                 res.status(200).json({ status: "success", data: { rooms }, message: "Room(s) found" }) 

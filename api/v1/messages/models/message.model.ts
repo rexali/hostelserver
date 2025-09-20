@@ -9,8 +9,8 @@ class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Me
     declare recipientId: number
     declare senderId: number;
     declare read: boolean;
-    declare updatedAt: CreationOptional<Date>
-    declare createdAt: CreationOptional<Date>
+    declare updatedAt: CreationOptional<Date>;
+    declare createdAt: CreationOptional<Date>;
 }
 // define model
 Message.init({

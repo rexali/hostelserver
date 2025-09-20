@@ -40,7 +40,7 @@ Booking.init({
         defaultValue: 0
     },
     paymentStatus: {
-        type: DataTypes.INTEGER
+        type: DataTypes.STRING
     },
     status: {
         type: DataTypes.STRING

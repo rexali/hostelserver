@@ -1,5 +1,5 @@
 import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model, Sequelize } from "sequelize";
-import {sequelize } from "../../../../config";
+import { sequelize } from "../../../../config";
 import Federation from "./federation.model";
 import Hostel from "../../hostels/models/hostel.model";
 import Booking from "../../bookings/models/booking.model";
@@ -9,7 +9,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare id: CreationOptional<number>;
     declare username: string;
     declare password: string;
-    declare permission: Array<string>;
+    declare permission: CreationOptional<Array<string>>;
     declare status: string;
     declare role: string;
     declare code: string;
@@ -34,11 +34,12 @@ User.init({
         type: DataTypes.STRING
     },
     permission: {
-        type: DataTypes.ARRAY(DataTypes.STRING)
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        defaultValue: ["read", "write"],
     },
     status: {
         type: DataTypes.ENUM("yes", "no"),
-        defaultValue:'no'
+        defaultValue: 'no'
     },
     code: {
         type: DataTypes.STRING

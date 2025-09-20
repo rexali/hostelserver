@@ -1,7 +1,5 @@
 import dotenv from "dotenv";
-import { Dialect, Sequelize, } from "sequelize";
-import passport from "passport";
-import LocalStrategy from "passport-local";
+import { Sequelize, } from "sequelize";
 dotenv.config();
 
 function getSequelizeInstance() {
@@ -45,6 +43,7 @@ const sequelize = getSequelizeInstance();
 const config = {
 
     port: process.env.PORT || 3000,
+    base_url:"http://localhost:3000",
     secret: 'secret',
     redisUrl: 'redis://localhost',
     routes: {
@@ -61,7 +60,8 @@ const config = {
         notifications: '/api/v1/notifications',
         bookings: '/api/v1/bookings',
         transactions: '/api/v1/transactions',
-        reports: '/api/v1/reports'
+        reports: '/api/v1/reports',
+        csrf:'/csrf'
     },
 }
 

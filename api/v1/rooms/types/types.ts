@@ -16,26 +16,9 @@ export type RoomType = {
     availability: boolean;
     rating: number;
     featured: boolean;
-    popular: boolean;
-    newlyAdded: boolean;
-    recentlySold: boolean;
-    recommended: boolean;
     agentName: string;
     agentPhone: string;
     HostelId: number;
     createdAt?: Date;
     updatedAt?: Date;
 }
-
-
-// export type RoomType = {
-//     id?: number;
-//     photos: string[];
-//     roomNumber: number;
-//     roomType: string;
-//     availability: boolean;
-//     price: number;
-//     HotelId: number;
-//     createdAt?: Date;
-//     updatedAt?: Date;
-// }

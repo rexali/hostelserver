@@ -1,9 +1,9 @@
-import { Op } from "sequelize";
+import { col, fn, Op } from "sequelize";
 import Room from "../models/room.model";
 import { RoomType } from "../types/types";
-// import Hostel from "../../hotels/models/hotel.model";
 import { limit } from "../../../../constants/constants";
 import Hostel from "../../hostels/models/hostel.model";
+import Review from "../../reviews/model/review.model";
 
 export class RoomService {
 
@@ -39,11 +39,32 @@ export class RoomService {
 
     static async getRooms(page: number = 1) {
         try {
-            const offset = (page - 1) * limit
-            return await Room.findAll({
+            const offset = (page - 1) * limit;
+
+            let rooms = await Room.findAll({
                 limit,
                 offset,
+                attributes: {
+                    include:
+                        [
+                            [fn("AVG", col("reviews.rating")), "averageRating"],
+                            [fn("COUNT", col("reviews.id")), "reviewCount"],
+                        ],
+                },
+                include: {
+                    model: Review,
+                    as: "reviews",
+                    attributes: [
+                         "id",
+                         "RoomId",
+                         "content",
+                         "rating"
+                    ]
+                },
+                group: ["reviews.RoomId"]
             });
+
+            return rooms;
         } catch (error) {
             console.warn(error);
         }
@@ -57,7 +78,7 @@ export class RoomService {
                 offset,
                 include: {
                     model: Hostel,
-                    required:false,
+                    required: false,
                     where: {
                         UserId: userId
                     }

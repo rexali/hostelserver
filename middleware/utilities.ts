@@ -10,7 +10,8 @@ declare module 'express-session' {
 
 export function getCsrfToken(req: Request, res: Response, next: NextFunction) {
     res.locals.token = req.csrfToken();
-    res.cookie("_csrf2",req.csrfToken());
+    res.clearCookie("_csrf");
+    res.cookie("_csrf", req.csrfToken());
     next();
 };
 

@@ -23,7 +23,7 @@ export default async function registerUserHandler(req: Request, res: Response) {
 
         // let us validate user data
         const userDataSchema = Joi.object().keys({
-            name:Joi.string().required(),
+            name: Joi.string().required(),
             username: Joi.string().required(), // i.e. email
             password: Joi.string().required(),
             phone: Joi.string().required(),
@@ -31,8 +31,8 @@ export default async function registerUserHandler(req: Request, res: Response) {
             localGovt: Joi.string().required(),
             state: Joi.string().required(),
             role: Joi.string().required(),
-            permission: Joi.array<string>().required(),
-            status: Joi.string().required()
+            permission: Joi.array<string>(),
+            status: Joi.string()
         });
 
         const {
@@ -73,7 +73,7 @@ export default async function registerUserHandler(req: Request, res: Response) {
             const code = uuidV4();
             // let us sanitise user data now
             const userData = {
-                name:escape(username),
+                name: escape(name),
                 username: escape(username),
                 password: escape(password),
                 phone: escape(phone),
@@ -81,8 +81,8 @@ export default async function registerUserHandler(req: Request, res: Response) {
                 localGovt: escape(localGovt),
                 state: escape(state),
                 role: escape(role),
-                permission: permission,
-                status: escape(status),
+                permission: permission ?? ["read", "write"],
+                status: escape(status ?? "no"),
                 code: code
             }
 
@@ -98,7 +98,7 @@ export default async function registerUserHandler(req: Request, res: Response) {
             const user = await authService.createUser();
             // enter to profile
             const profile = await ProfileService.createProfile({
-                name:userData.name,
+                name: userData.name,
                 UserId: user.id,
                 phone: userData.phone,
                 address: userData.address,
@@ -106,9 +106,20 @@ export default async function registerUserHandler(req: Request, res: Response) {
                 state: userData.state,
             });
 
-            if (user !== null && profile !== null) {
+            if (user) {
 
-                res.status(200).json({ status: 'success', data: { user }, messsage: 'Registeration successful' });
+                res.status(200).json({
+                    status: 'success',
+                    data: {
+                        user: {
+                            username: user.username,
+                            role: user.role,
+                            permission: user.permission,
+                            status: user.status,
+                            code: user.code
+                        }
+                    }, messsage: 'Registeration successful'
+                });
             } else {
                 res.status(200).json({ status: 'fail', data: null, messsage: 'Try again' });
             }

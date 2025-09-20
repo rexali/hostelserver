@@ -40,7 +40,7 @@ export function authenticateUserHelper(username: string, password: string, done:
                 if (!checkPassword(userData.password, user.password)) {
                     return done(null, false, { message: "Incorrect Username or password" });
                 }
-
+ 
                 const token = jwt.sign(
                     {
                         userId: user.id,

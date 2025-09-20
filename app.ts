@@ -44,7 +44,13 @@ app.use(rateLimit({
   windowMs: 15 * 60 * 1000, //15mins  
   max: 100 // limit each ip to 100 request per WindowMs i.e 15min
 }));
-app.use(cors());
+const corsOption = {
+  origin:"http://localhost:5173",
+  credentials:true
+}
+app.use(cors({
+  ...corsOption
+}));
 app.use(express.static(__dirname + '/public'));
 app.use(cookieParser(config.secret));
 app.use(session({
@@ -58,11 +64,12 @@ app.use(session({
 // initialize newpassport
 app.use(passport.initialize());
 // use newpassport session
-app.use(passport.session())
+app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(csrf({ cookie: true }));
-app.use(getCsrfToken);
+app.use(csrf());
+// app.use(csrf({ cookie: true }));
+// app.use(getCsrfToken);
 app.use(authenticated);
 app.use(flash());
 app.use(function (req: Request, res: Response, next: NextFunction) {
@@ -81,11 +88,18 @@ app.use(function (req: Request, res: Response, next: NextFunction) {
     console.error("Unable to connect with database: " + error);
   });
 
-  sequelize.sync({ force: false }).then(() => {
+  // sequelize.sync({ force: false }).then(() => {
+  //   console.log("database synced successfully");
+  // }).catch((error: any) => {
+  //   console.error("Unable to sync with database: " + error);
+  // })
+
+  sequelize.sync({ alter: true }).then(() => {
     console.log("database synced successfully");
   }).catch((error: any) => {
     console.error("Unable to sync with database: " + error);
   })
+
 }))();
 
 // authentication route
@@ -103,16 +117,21 @@ app.use(config.routes.messages, messageRouter);
 // Notification routes
 app.use(config.routes.notifications, notificationRouter);
 // booking routes
-app.use(config.routes.bookings, bookingRouter);
+app.use(config.routes.bookings, bookingRouter); 
 // transaction routes
 
 app.get(config.routes.home, (req: Request, res: Response) => {
   res.send('Welcome to Hostel Booking App Server');
 });
 
+app.get(config.routes.csrf, (req: Request, res: Response) => {
+  // res.cookie('_csrf', csrf);
+  res.json({ status: 'success', message: 'token generated', data: { _csrf: req.csrfToken()} });
+});
+
 // app.get(config.routes.home, (req: Request, res: Response) => {
 //   // res.cookie
-  // res.clearCookie('token');
+// res.clearCookie('token');
 //   res.render('index', {
 //     title: 'Index',
 //     cookie: JSON.stringify(req.cookies),

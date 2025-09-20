@@ -2,7 +2,7 @@ import User from "../models/user.model";
 import { UserType } from "../types/types";
 
 export class AuthService {
-    
+
     data: UserType;
 
     constructor(data: UserType) {
@@ -10,11 +10,14 @@ export class AuthService {
     }
 
     async createUser() {
-        return await User.create(
+        
+        let { password, ...rest } = await User.create(
             {
                 ...this.data,
-            }
+            },
         );
+
+        return rest;
     }
 
     static async updateUserPassword(data: { password: string, username: string }) {
@@ -61,7 +64,7 @@ export class AuthService {
         return await User.findAll({
             limit,
             offset,
-            attributes:["id","username"]
+            attributes: ["id", "username"]
         });
     }
 

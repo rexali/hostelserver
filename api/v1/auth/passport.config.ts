@@ -398,12 +398,8 @@ passport.serializeUser(function (user, done) {
     done(null, user)
 })
 // deserialise
-passport.deserializeUser(function (id, done) {
-    User.findByPk(id as number).then((user) => {
+passport.deserializeUser(function (user:any, done) {
         done(null, user)
-    }).catch(err => {
-        done(err, null)
-    })
 })
 
 export default passport;

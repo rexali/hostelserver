@@ -2,7 +2,6 @@ import { CreationOptional, DataTypes, ForeignKey, InferAttributes, InferCreation
 import User from "../../auth/models/user.model";
 import { sequelize } from "../../../../config";
 
-
 class Profile extends Model<InferAttributes<Profile>, InferCreationAttributes<Profile>> {
     declare id: CreationOptional<number>;
     declare name: CreationOptional<string>;

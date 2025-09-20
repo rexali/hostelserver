@@ -45,7 +45,7 @@ authRouter.post(
 );
 
 // verification route
-authRouter.post(
+authRouter.get(
     "/verify-token",
     verifyTokenHandler
 );
@@ -54,7 +54,7 @@ authRouter.post(
 // authRouter.post("/login/local", logInHandler);
 
 // local route 2
-authRouter.post("/login/local", passport.authenticate('local',{failureRedirect:'/login'}), loggedinHandler);
+authRouter.post("/login/local", passport.authenticate('local'), loggedinHandler);
 
 // facebook route
 authRouter.get(

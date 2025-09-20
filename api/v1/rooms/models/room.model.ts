@@ -27,10 +27,6 @@ class Room extends Model<InferAttributes<Room>, InferCreationAttributes<Room>> {
     declare availability: boolean;
     declare rating: number;
     declare featured: boolean;
-    declare popular: boolean;
-    declare newlyAdded: boolean;
-    declare recentlySold: boolean;
-    declare recommended: boolean;
     declare agentName: string;
     declare agentPhone: string;
     declare HostelId: ForeignKey<number>;
@@ -89,18 +85,7 @@ Room.init({
     featured: {
         type: DataTypes.BOOLEAN
     },
-    popular: {
-        type: DataTypes.BOOLEAN
-    },
-    newlyAdded: {
-        type: DataTypes.BOOLEAN
-    },
-    recentlySold: {
-        type: DataTypes.BOOLEAN
-    },
-    recommended: {
-        type: DataTypes.BOOLEAN
-    },
+   
     agentName: {
         type: DataTypes.STRING
     },
