@@ -2,44 +2,6 @@ import dotenv from "dotenv";
 import { Sequelize, } from "sequelize";
 dotenv.config();
 
-function getSequelizeInstance() {
-
-    var database, username, password, host, dialect;
-
-    if (process.env.NODE_ENV !== "development") {
-        database = config.database_prod;
-        username = config.username_prod;
-        password = config.password_prod;
-        host = config.host_prod;
-        dialect = config.dialect_prod;
-    } else {
-        database = config.database_dev;
-        username = config.username_dev;
-        password = config.password_dev;
-        host = config.host_dev;
-        dialect = config.dialect_dev;
-    }
-
-    const sequelize = new Sequelize(
-        database,
-        username,
-        password,
-        {
-            host,
-            dialect,
-            pool: {
-                max: 5,
-                min: 0,
-                acquire: 30000,
-                idle: 10000
-            }
-        });
-
-    return sequelize;
-}
-
-const sequelize = getSequelizeInstance();
-
 const config = {
     // prod
     database_prod: process.env.PROD_DB_NAME as string,
@@ -78,6 +40,45 @@ const config = {
         csrf: '/csrf'
     },
 }
+
+
+function getSequelizeInstance() {
+
+    var database, username, password, host, dialect;
+
+    if (process.env.NODE_ENV !== "development") {
+        database = config.database_prod;
+        username = config.username_prod;
+        password = config.password_prod;
+        host = config.host_prod;
+        dialect = config.dialect_prod;
+    } else {
+        database = config.database_dev;
+        username = config.username_dev;
+        password = config.password_dev;
+        host = config.host_dev;
+        dialect = config.dialect_dev;
+    }
+
+    const sequelize = new Sequelize(
+        database,
+        username,
+        password,
+        {
+            host,
+            dialect,
+            pool: {
+                max: 5,
+                min: 0,
+                acquire: 30000,
+                idle: 10000
+            }
+        });
+
+    return sequelize;
+}
+
+const sequelize = getSequelizeInstance();
 
 export { config, sequelize }
 

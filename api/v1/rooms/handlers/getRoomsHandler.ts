@@ -9,7 +9,7 @@ import { getFeaturedRooms } from "../helpers/getFeaturedRooms";
 
 export async function getRoomsHandler(req: Request, res: Response, next: NextFunction) {
     try {
-        const term = req.query.term as string;
+        const term = req.query?.term as string;
         const rooms = await RoomService.getRooms();
 
         if (rooms !== null) {
@@ -17,11 +17,11 @@ export async function getRoomsHandler(req: Request, res: Response, next: NextFun
                 res.status(200).json({
                     status: "success", data: {
                         rooms,
-                        newRooms: await getNewlyAddedRooms(),
-                        popularRooms: await getPopularRooms(),
-                        recommended: await getRecommendedRooms(term),
-                        bookedRooms: await getRecentlyBookedRooms(),
-                        featuredRooms: await getFeaturedRooms()
+                        // newRooms: await getNewlyAddedRooms(),
+                        // popularRooms: await getPopularRooms(),
+                        // recommended: await getRecommendedRooms(term),
+                        // bookedRooms: await getRecentlyBookedRooms(),
+                        // featuredRooms: await getFeaturedRooms()
                     }, message: "Room(s) found"
                 })
             } else {

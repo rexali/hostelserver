@@ -8,6 +8,7 @@ import {
 } from "sequelize";
 import { sequelize } from "../../../../config";
 import Booking from "../../bookings/models/booking.model";
+import Review from "../../reviews/model/review.model";
 
 
 class Room extends Model<InferAttributes<Room>, InferCreationAttributes<Room>> {
@@ -98,6 +99,9 @@ Room.init({
 
 Room.hasMany(Booking);
 Booking.belongsTo(Room);
+
+Room.hasMany(Review);
+Review.belongsTo(Room)
 
 
 export default Room;

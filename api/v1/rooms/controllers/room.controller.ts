@@ -44,24 +44,24 @@ export class RoomService {
             let rooms = await Room.findAll({
                 limit:2,
                 offset,
-                attributes: {
-                    include:
-                        [
-                            [fn("AVG", col("reviews.rating")), "averageRating"],
-                            [fn("COUNT", col("reviews.id")), "reviewCount"],
-                        ],
-                },
+                // attributes: {
+                //     include:
+                //         [
+                //             [fn("AVG", col("Review.rating")), "averageRating"],
+                //             [fn("COUNT", col("Review.id")), "reviewCount"],
+                //         ],
+                // },
                 include: {
                     model: Review,
-                    as: "reviews",
-                    attributes: [
-                         "id",
-                         "RoomId",
-                         "content",
-                         "rating"
-                    ]
+                    // as: "Reviews",
+                    // attributes: [
+                    //      "id",
+                    //      "RoomId",
+                    //      "content",
+                    //      "rating"
+                    // ]
                 },
-                group: ["reviews.RoomId"]
+                // group: ["Review.RoomId"]
             });
 
             return rooms;

@@ -2,7 +2,6 @@ import { CreationOptional, DataTypes, ForeignKey, InferAttributes, InferCreation
 
 import { sequelize } from "../../../../config";
 import User from "../../auth/models/user.model";
-import Room from "../../rooms/models/room.model";
 
 class Review extends Model<InferAttributes<Review>, InferCreationAttributes<Review>> {
     declare id: CreationOptional<number>;
@@ -39,8 +38,6 @@ Review.init({
 
 }, { sequelize, tableName: "Review" });
 
-Review.belongsTo(Room);
-Review.belongsTo(User);
 
 export default Review
 

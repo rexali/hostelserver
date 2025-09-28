@@ -46,11 +46,12 @@ app.use(rateLimit({
   max: 100 // limit each ip to 100 request per WindowMs i.e 15min
 }));
 const corsOption = {
-  origin:"http://localhost:5173",
-  credentials:true
+  origin: "http://localhost:5173",
+  credentials: true,
 }
 app.use(cors({
-  ...corsOption
+  ...corsOption,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
 }));
 app.use(express.static(__dirname + '/public'));
 app.use(cookieParser(config.secret));
@@ -118,19 +119,19 @@ app.use(config.routes.messages, messageRouter);
 // Notification routes
 app.use(config.routes.notifications, notificationRouter);
 // booking routes
-app.use(config.routes.bookings, bookingRouter); 
+app.use(config.routes.bookings, bookingRouter);
 // booking routes
-app.use(config.routes.bookings, bookingRouter); 
+app.use(config.routes.bookings, bookingRouter);
 // review routes
-app.use(config.routes.reviews, reviewRouter); 
+app.use(config.routes.reviews, reviewRouter);
 // server home
-app.get(config.routes.home, (req: Request, res: Response) => {res.send('Welcome to Hostel Booking App Server')});
+app.get(config.routes.home, (req: Request, res: Response) => { res.send('Welcome to Hostel Booking App Server') });
 // check health route
-app.use(config.routes.healthz, (req: Request, res: Response)=>{res.send("I am healthy")}); 
+app.use(config.routes.healthz, (req: Request, res: Response) => { res.send("I am healthy") });
 // get csrf token route
 app.get(config.routes.csrf, (req: Request, res: Response) => {
   // res.cookie('_csrf', csrf);
-  res.json({ status: 'success', message: 'token generated', data: { _csrf: req.csrfToken()} });
+  res.json({ status: 'success', message: 'token generated', data: { _csrf: req.csrfToken() } });
 });
 
 // app.get(config.routes.home, (req: Request, res: Response) => {
