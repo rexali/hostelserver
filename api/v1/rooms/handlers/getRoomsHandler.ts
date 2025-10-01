@@ -15,13 +15,14 @@ export async function getRoomsHandler(req: Request, res: Response, next: NextFun
         if (rooms !== null) {
             if (rooms?.length) {
                 res.status(200).json({
-                    status: "success", data: {
+                    status: "success", 
+                    data: {
                         rooms,
-                        // newRooms: await getNewlyAddedRooms(),
-                        // popularRooms: await getPopularRooms(),
-                        // recommended: await getRecommendedRooms(term),
-                        // bookedRooms: await getRecentlyBookedRooms(),
-                        // featuredRooms: await getFeaturedRooms()
+                        newRooms: await getNewlyAddedRooms(),
+                        popularRooms: await getPopularRooms(),
+                        recommendedRooms: await getRecommendedRooms(term),
+                        bookedRooms: await getRecentlyBookedRooms(),
+                        featuredRooms: await getFeaturedRooms()
                     }, message: "Room(s) found"
                 })
             } else {

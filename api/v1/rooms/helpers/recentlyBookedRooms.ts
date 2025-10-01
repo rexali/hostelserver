@@ -14,7 +14,6 @@ export const getRecentlyBookedRooms = async function getRecentlyBookedRooms() {
             },
             include:{
                 model:Room,
-                as:'rooms'
             },
             limit:2
         });

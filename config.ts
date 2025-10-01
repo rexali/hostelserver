@@ -37,7 +37,8 @@ const config = {
         bookings: '/api/v1/bookings',
         transactions: '/api/v1/transactions',
         reports: '/api/v1/reports',
-        csrf: '/csrf'
+        csrf: '/csrf',
+        search: '/search'
     },
 }
 

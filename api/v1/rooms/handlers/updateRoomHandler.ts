@@ -27,7 +27,7 @@ export async function updateRoomHandler(req: Request, res: Response, next: NextF
                 let room = await Room.findByPk(id);
                 photos = room?.photos;
             }
-            const { _csrf, images, amenities, ...newData } = req.body;
+            const { _csrf, amenities, ...newData } = req.body;
             const _amenities = amenities.split(',').map((item: any) => item.replace(/'/g, ''));
             const roomService = new RoomService({ ...newData, photos, amenities: _amenities, id });
             const [affectedCount] = await roomService.editRoom() as [affectedCount: number];

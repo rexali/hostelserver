@@ -17,11 +17,11 @@ export class ProfileService {
         try {
             return await Profile.findOne({
                 where: {
-                    id: id
+                    UserId: id
                 },
                 include: {
                     model: User,
-                    attributes:["id","username"]
+                    attributes:["id","username","role"]
                 }
             });
         } catch (error) {
@@ -58,7 +58,7 @@ export class ProfileService {
 
     async updateProfile() {
         try {
-            return await Profile.update({ ...this.data }, { where: { id: this.data.id } });
+            return await Profile.update({ ...this.data }, { where: { UserId: this.data.UserId } });
         } catch (error) {
             console.warn(error);
         }

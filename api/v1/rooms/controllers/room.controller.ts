@@ -42,7 +42,7 @@ export class RoomService {
             const offset = (page - 1) * limit;
 
             let rooms = await Room.findAll({
-                limit:2,
+                limit: 2,
                 offset,
                 // attributes: {
                 //     include:
@@ -120,7 +120,7 @@ export class RoomService {
                 limit,
                 offset,
                 where: {
-                    roomType: {
+                    location: {
                         [Op.like]: `%${term}%`,
                     },
                 },

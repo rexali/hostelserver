@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { ProfileType } from "../types/types";
 import multer from "multer";
 import { uploadFile } from "../../../../utils/uploadFile";
+import Profile from "../models/profile.model";
 
 
 export async function updateProfileHandler(req: Request, res: Response, next: NextFunction) {
@@ -17,20 +18,28 @@ export async function updateProfileHandler(req: Request, res: Response, next: Ne
         };
         // Everything went fine, send the file name and other fields to database
         try {
+            const id  = req.params.id as unknown as number ;
+            let image;
             if (req.file?.filename) {
-                const id = req.params.id as unknown as number;
-                const data = req.body as ProfileType;
-                const profileService = new ProfileService({ ...data, image: req.file.filename });
-                const [affectedCount] = await profileService.updateProfile() as [affectedCount: number];
-                if (affectedCount === 1) {
-                    res.status(200).json({ status: "success", data: { affectedCount }, message: "Profile updated" });
-                } else {
-                    res.status(200).json({ status: "success", data: null, message: "Profile not updated" });
-                }
+                image = req.file?.filename;
+            } else {
+                let profile = await Profile.findByPk(id);
+                image = profile?.image;
+            }
+            console.log(id);   
+            const { _csrf, ...newData } = req.body;
+
+            const profileService = new ProfileService({ ...newData, image, UserId: id });
+            const [affectedCount] = await profileService.updateProfile() as [affectedCount: number];
+            if (affectedCount === 1) {
+                res.status(200).json({ status: "success", data: { affectedCount }, message: "Profile updated" });
+            } else {
+                res.status(400).json({ status: "fail", data: null, message: "Profile not updated" });
             }
 
-        } catch (error) {
-            res.status(500).json({ status: "failure", data: null, message: "Error: " + error });
+
+        } catch (error: any) {
+            res.status(500).json({ status: "fail", data: null, message: "Error: " + error.message });
         }
     });
 } 

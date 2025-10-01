@@ -7,18 +7,18 @@ export const getPopularRooms = async function getPopularRooms() {
         let popularRooms = await Room.findAll({
             attributes: {
                 include: [
-                    [fn("AVG", col("reviews.rating")), "averageRating"],
-                    [fn("COUNT", col("reviews.id")), "reviewCount"]
+                    [fn("AVG", col("Reviews.rating")), "averageRating"],
+                    [fn("COUNT", col("Reviews.id")), "reviewCount"]
                 ]
             },
-            include: {
+            subQuery:false,
+            include: [{
                 model: Review,
-                as: "reviews",
-                attributes: []
-            },
-            group: ["reviews.RoomId"],
-            having: where(fn("AVG", col("reviews.rating")), ">=", 0.5),
-            order: [[fn("AVG", col("reviews.rating")), 'DESC']],
+                required:false
+            }],
+            group: ["Room.id","Reviews.id"],
+            having: where(fn("AVG", col("Reviews.rating")), ">=", 0.0),
+            order: [[fn("AVG", col("Reviews.rating")), 'DESC']],
             limit:2
         });
 

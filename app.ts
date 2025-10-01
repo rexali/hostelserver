@@ -22,6 +22,7 @@ import messageRouter from "./api/v1/messages/routes/message.routes";
 import notificationRouter from "./api/v1/notifications/routes/notification.routes";
 import bookingRouter from "./api/v1/bookings/routes/booking.routes";
 import reviewRouter from "./api/v1/reviews/routes/review.routes";
+import { searchRoomsHandler } from "./api/v1/rooms/handlers/searchRoomsHandler";
 
 declare module 'express-session' {
   interface SessionData {
@@ -30,6 +31,11 @@ declare module 'express-session' {
 }
 
 const app: Application = express();
+const corsOption = {
+  origin: "http://localhost:5173",
+  credentials: true,
+  // methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
+}
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -41,19 +47,11 @@ app.disable("x-powered-by");
 // help set response headers
 app.use(helmet())
 // help validate and sanitise
-app.use(rateLimit({
-  windowMs: 15 * 60 * 1000, //15mins  
-  max: 100 // limit each ip to 100 request per WindowMs i.e 15min
-}));
-const corsOption = {
-  origin: "http://localhost:5173",
-  credentials: true,
-}
-app.use(cors({
-  ...corsOption,
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
-}));
-app.use(express.static(__dirname + '/public'));
+// app.use(rateLimit({
+//   windowMs: 15 * 60 * 1000, //15mins  
+//   max: 100 // limit each ip to 100 request per WindowMs i.e 15min
+// }));
+app.use(cors({...corsOption}));
 app.use(cookieParser(config.secret));
 app.use(session({
   secret: config.secret,
@@ -63,6 +61,7 @@ app.use(session({
   //   secure:true,
   // }
 }));
+app.use(express.static(__dirname + '/public'));
 // initialize newpassport
 app.use(passport.initialize());
 // use newpassport session
@@ -124,6 +123,8 @@ app.use(config.routes.bookings, bookingRouter);
 app.use(config.routes.bookings, bookingRouter);
 // review routes
 app.use(config.routes.reviews, reviewRouter);
+// review routes
+app.use(config.routes.search, searchRoomsHandler);
 // server home
 app.get(config.routes.home, (req: Request, res: Response) => { res.send('Welcome to Hostel Booking App Server') });
 // check health route

@@ -7,6 +7,7 @@ import { v4 as uuidV4 } from "uuid";
 import { Request, Response, NextFunction } from "express";
 import { escape } from "html-escaper";
 import { ProfileService } from "../../profiles/controllers/profile.controller";
+import { profile } from "console";
 
 const mutex = new Mutex();
 /**
@@ -97,13 +98,17 @@ export default async function registerUserHandler(req: Request, res: Response) {
             const authService = new AuthService(authData)
             const user = await authService.createUser();
             // enter to profile
-            const profile = await ProfileService.createProfile({
+            ProfileService.createProfile({
                 name: userData.name,
                 UserId: user.id,
                 phone: userData.phone,
                 address: userData.address,
                 localGovt: userData.localGovt,
                 state: userData.state,
+            }).then(profile => {
+                
+            }).catch(error => {
+                console.warn(error);
             });
 
             if (user) {
@@ -121,7 +126,7 @@ export default async function registerUserHandler(req: Request, res: Response) {
                     }, messsage: 'Registeration successful'
                 });
             } else {
-                res.status(200).json({ status: 'fail', data: null, messsage: 'Try again' });
+                res.status(400).json({ status: 'fail', data: null, messsage: 'Try again' });
             }
         }
     } catch (error) {

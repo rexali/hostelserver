@@ -21,7 +21,7 @@ export function createRoomHandler(req: Request, res: Response, next: NextFunctio
             const files = req.files as any;
             const filenames = getFilesNames(files);
             const photos = filenames;
-            const { _csrf, images, amenities, ...newData } = req.body;
+            const { _csrf, amenities, ...newData } = req.body;
             const _amenities = amenities.split(',').map((item: any) => item.replace(/'/g, ''));
             console.log(_amenities);
             const roomService = new RoomService({ ...newData, photos, amenities: _amenities });

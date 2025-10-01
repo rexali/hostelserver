@@ -1,7 +1,7 @@
 import { Op } from "sequelize";
 import Room from "../models/room.model";
 
-export const getRecommendedRooms = async function getRecommendedRooms(term: string) {
+export const getRecommendedRooms = async function getRecommendedRooms(term: string='hamco') {
     try {
         let recommendedRooms = await Room.findAll({
             where: {

@@ -9,9 +9,16 @@ import verifyTokenHandler from "../handlers/verifyTokenHandler";
 import logInHandler from "../handlers/logInHandler";
 import passport from "../passport.config";
 import loggedinHandler from "../handlers/loggedinHandler";
+import { removeUserHandler } from "../handlers/removeUserHandler";
 
 const authRouter = express.Router();
 
+// remove user account
+authRouter.delete(
+    "/remove",
+    // verifyCsrfProtection,
+    removeUserHandler
+);
 // registration route
 authRouter.post(
     "/register",

@@ -25,14 +25,14 @@ export default async function verifyTokenHandler(req: Request, res: Response, ne
               const unpaddedToken = unpadToken(token) as string;
               let decoded = jwt.verify(unpaddedToken, process.env.SECRET_KEY as string) as Decoded;
               if (decoded.userId && decoded.role) {
-                     // const profile = await ProfileService.getProfile(decoded.userId);
+                     const profile = await ProfileService.getProfile(decoded.userId);
                      return res.status(200).json({
                             status: 'success',
                             data: {
                                    userId: decoded.userId,
                                    email: decoded.username,
                                    role: decoded.role,
-                                   // ...profile
+                                   profile
                             },
                             messsage: 'Verified'
 
