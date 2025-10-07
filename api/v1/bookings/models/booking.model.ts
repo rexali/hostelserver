@@ -20,9 +20,8 @@ class Booking extends Model<InferAttributes<Booking>, InferCreationAttributes<Bo
     declare UserId: ForeignKey<number>;
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>
-
 }
-// define model
+
 Booking.init({
     id: {
         type: DataTypes.INTEGER,
@@ -42,11 +41,11 @@ Booking.init({
     },
     paymentStatus: {
         type: DataTypes.STRING,
-        defaultValue:"pending" // paid
+        // defaultValue: "pending" // paid
     },
     status: {
         type: DataTypes.STRING,
-        defaultValue:"pending"  //confirmed
+        // defaultValue: "pending"  //confirmed
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
