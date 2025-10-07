@@ -21,7 +21,7 @@ async function createMessageHandler(req, res, next) {
             res.status(200).json({ status: "success", data: { message }, message: "Message sent" });
         }
         else {
-            res.status(200).json({ status: "success", data: null, message: "No message sent" });
+            res.status(400).json({ status: "fail", data: null, message: "No message sent" });
         }
     }
     catch (error) {

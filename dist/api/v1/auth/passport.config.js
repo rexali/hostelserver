@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = __importDefault(require("passport-local"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const user_model_1 = __importDefault(require("../auth/models/user.model"));
 const authenticateUserHelper_1 = require("../auth/helpers/authenticateUserHelper");
 // var AppleStrategy2  = require("passport-appleid");
 dotenv_1.default.config();
@@ -354,11 +353,7 @@ passport_1.default.serializeUser(function (user, done) {
     done(null, user);
 });
 // deserialise
-passport_1.default.deserializeUser(function (id, done) {
-    user_model_1.default.findByPk(id).then((user) => {
-        done(null, user);
-    }).catch(err => {
-        done(err, null);
-    });
+passport_1.default.deserializeUser(function (user, done) {
+    done(null, user);
 });
 exports.default = passport_1.default;

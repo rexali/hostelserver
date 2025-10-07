@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MessageService = void 0;
+const sequelize_1 = require("sequelize");
 const message_model_1 = __importDefault(require("../models/message.model"));
 class MessageService {
     constructor(data) {
@@ -28,6 +29,25 @@ class MessageService {
             return await message_model_1.default.findAll({
                 limit,
                 offset
+            });
+        }
+        catch (error) {
+            console.warn(error);
+        }
+    }
+    static async getUserMessages(userId, page = 1) {
+        const limit = 10;
+        const offset = (page - 1) * limit;
+        try {
+            return await message_model_1.default.findAll({
+                limit,
+                offset,
+                where: {
+                    [sequelize_1.Op.or]: {
+                        recipientId: userId,
+                        senderId: userId
+                    }
+                }
             });
         }
         catch (error) {

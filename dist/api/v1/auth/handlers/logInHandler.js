@@ -15,7 +15,7 @@ function logInHandler(req, res, next) {
             return next(err);
         }
         if (!user) {
-            res.status(400).json({ status: "success", data: { result: false, user: null }, message: "Login failed" });
+            res.status(400).json({ status: "fail", data: { result: false, user: null }, message: "Login failed" });
             // return res.redirect('/signin') 
         }
         else {
@@ -23,7 +23,7 @@ function logInHandler(req, res, next) {
             res.cookie("token", user.token);
             req.session.isAuthenticated = true;
             req.user = { ...user };
-            res.status(200).json({ status: "success", data: { result: true, user }, message: "Login successful" });
+            res.status(200).json({ status: "success", data: { token: user.token }, message: "Login successful" });
             // res.redirect('/dashboard');
         }
     })(req, res, next);

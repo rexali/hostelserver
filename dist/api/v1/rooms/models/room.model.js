@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const config_1 = require("../../../../config");
 const booking_model_1 = __importDefault(require("../../bookings/models/booking.model"));
+const review_model_1 = __importDefault(require("../../reviews/model/review.model"));
 class Room extends sequelize_1.Model {
 }
 // define model
@@ -20,9 +21,6 @@ Room.init({
     },
     roomNumber: {
         type: sequelize_1.DataTypes.INTEGER
-    },
-    roomType: {
-        type: sequelize_1.DataTypes.STRING
     },
     type: {
         type: sequelize_1.DataTypes.STRING
@@ -60,18 +58,6 @@ Room.init({
     featured: {
         type: sequelize_1.DataTypes.BOOLEAN
     },
-    popular: {
-        type: sequelize_1.DataTypes.BOOLEAN
-    },
-    newlyAdded: {
-        type: sequelize_1.DataTypes.BOOLEAN
-    },
-    recentlySold: {
-        type: sequelize_1.DataTypes.BOOLEAN
-    },
-    recommended: {
-        type: sequelize_1.DataTypes.BOOLEAN
-    },
     agentName: {
         type: sequelize_1.DataTypes.STRING
     },
@@ -83,4 +69,6 @@ Room.init({
 }, { sequelize: config_1.sequelize, tableName: "Room" });
 Room.hasMany(booking_model_1.default);
 booking_model_1.default.belongsTo(Room);
+Room.hasMany(review_model_1.default);
+review_model_1.default.belongsTo(Room);
 exports.default = Room;

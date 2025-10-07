@@ -32,8 +32,8 @@ async function registerUserHandler(req, res) {
             localGovt: joi_1.default.string().required(),
             state: joi_1.default.string().required(),
             role: joi_1.default.string().required(),
-            permission: joi_1.default.array().required(),
-            status: joi_1.default.string().required()
+            permission: joi_1.default.array(),
+            status: joi_1.default.string()
         });
         const { name, username, password, phone, address, localGovt, state, role, permission, status, } = req.body;
         const validationResult = userDataSchema.validate({
@@ -60,7 +60,7 @@ async function registerUserHandler(req, res) {
             const code = (0, uuid_1.v4)();
             // let us sanitise user data now
             const userData = {
-                name: (0, html_escaper_1.escape)(username),
+                name: (0, html_escaper_1.escape)(name),
                 username: (0, html_escaper_1.escape)(username),
                 password: (0, html_escaper_1.escape)(password),
                 phone: (0, html_escaper_1.escape)(phone),
@@ -68,8 +68,8 @@ async function registerUserHandler(req, res) {
                 localGovt: (0, html_escaper_1.escape)(localGovt),
                 state: (0, html_escaper_1.escape)(state),
                 role: (0, html_escaper_1.escape)(role),
-                permission: permission,
-                status: (0, html_escaper_1.escape)(status),
+                permission: permission ?? ["read", "write"],
+                status: (0, html_escaper_1.escape)(status ?? "no"),
                 code: code
             };
             const authData = {
@@ -83,19 +83,33 @@ async function registerUserHandler(req, res) {
             const authService = new auth_controller_1.AuthService(authData);
             const user = await authService.createUser();
             // enter to profile
-            const profile = await profile_controller_1.ProfileService.createProfile({
+            profile_controller_1.ProfileService.createProfile({
                 name: userData.name,
                 UserId: user.id,
                 phone: userData.phone,
                 address: userData.address,
                 localGovt: userData.localGovt,
                 state: userData.state,
+            }).then(profile => {
+            }).catch(error => {
+                console.warn(error);
             });
-            if (user !== null && profile !== null) {
-                res.status(200).json({ status: 'success', data: { user }, messsage: 'Registeration successful' });
+            if (user) {
+                res.status(200).json({
+                    status: 'success',
+                    data: {
+                        user: {
+                            username: user.username,
+                            role: user.role,
+                            permission: user.permission,
+                            status: user.status,
+                            code: user.code
+                        }
+                    }, messsage: 'Registeration successful'
+                });
             }
             else {
-                res.status(200).json({ status: 'fail', data: null, messsage: 'Try again' });
+                res.status(400).json({ status: 'fail', data: null, messsage: 'Try again' });
             }
         }
     }

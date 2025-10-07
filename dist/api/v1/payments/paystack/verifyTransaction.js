@@ -16,11 +16,11 @@ const verifyTransaction = async (req, res) => {
                 'Authorization': 'Bearer ' + process.env.PAYSTACK_SECRET
             }
         });
-        console.log(data);
-        res.status(200).json({ success: data.data.success });
+        res.status(200).json({ status: "success", data: data.data.success, message: "Verified" });
     }
     catch (error) {
         console.warn(error);
+        res.status(500).json({ status: "fail", data: null, message: "Error! " + error.message });
     }
 };
 exports.verifyTransaction = verifyTransaction;

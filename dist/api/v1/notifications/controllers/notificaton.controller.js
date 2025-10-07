@@ -34,6 +34,18 @@ class NotificationService {
             console.warn(error);
         }
     }
+    static async getUserNotifications(userId, page = 1) {
+        try {
+            const offset = (page - 1) * constants_1.limit;
+            return await notification_model_1.default.findAll({
+                limit: constants_1.limit,
+                offset
+            });
+        }
+        catch (error) {
+            console.warn(error);
+        }
+    }
     async createNotification() {
         try {
             return await notification_model_1.default.create({ ...this.data });

@@ -53,10 +53,12 @@ class BookingService {
                     {
                         model: room_model_1.default,
                         required: false,
+                        attributes: ["id", "name", "type", "price", "createdAt"]
                     },
                     {
                         model: user_model_1.default,
                         required: false,
+                        attributes: ["id", "role", "username"]
                     }
                 ]
             });
@@ -75,26 +77,16 @@ class BookingService {
                 where: {
                     UserId: userId
                 },
-                include: [{
-                        model: user_model_1.default,
-                        attributes: ["id", "username"],
-                        required: false
-                    },
+                include: [
                     {
                         model: room_model_1.default,
                         required: false,
-                        include: [
-                            {
-                                model: hostel_model_1.default,
-                                required: false,
-                                include: [
-                                    {
-                                        model: user_model_1.default,
-                                        attributes: ["id", "username"],
-                                    }
-                                ]
-                            },
-                        ]
+                        attributes: ["id", "name", "type", "price", "createdAt"]
+                    },
+                    {
+                        model: user_model_1.default,
+                        required: false,
+                        attributes: ["id", "role", "username"]
                     }
                 ]
             });

@@ -10,7 +10,7 @@ async function getProfileHandler(req, res, next) {
             res.status(200).json({ status: "success", data: { profile }, message: "Profile collected" });
         }
         else {
-            res.status(200).json({ status: "success", data: null, message: "No profile found" });
+            res.status(404).json({ status: "fail", data: null, message: "No profile found" });
         }
     }
     catch (error) {

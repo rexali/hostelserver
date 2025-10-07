@@ -10,9 +10,10 @@ class AuthService {
         this.data = data;
     }
     async createUser() {
-        return await user_model_1.default.create({
+        let { password, ...rest } = await user_model_1.default.create({
             ...this.data,
         });
+        return rest;
     }
     static async updateUserPassword(data) {
         return await user_model_1.default.update({
@@ -51,7 +52,7 @@ class AuthService {
         return await user_model_1.default.findAll({
             limit,
             offset,
-            attributes: ["id", "username"]
+            attributes: ["id", "username", "role"]
         });
     }
     static async removeUser(id) {

@@ -13,7 +13,17 @@ const confirmationHandler_1 = __importDefault(require("../handlers/confirmationH
 const verifyTokenHandler_1 = __importDefault(require("../handlers/verifyTokenHandler"));
 const passport_config_1 = __importDefault(require("../passport.config"));
 const loggedinHandler_1 = __importDefault(require("../handlers/loggedinHandler"));
+const removeUserHandler_1 = require("../handlers/removeUserHandler");
+const getAllUsersHandler_1 = require("../handlers/getAllUsersHandler");
 const authRouter = express_1.default.Router();
+// get all users account
+authRouter.get("/users", 
+// verifyCsrfProtection,
+getAllUsersHandler_1.getAllUsersHandler);
+// remove user account
+authRouter.delete("/remove", 
+// verifyCsrfProtection,
+removeUserHandler_1.removeUserHandler);
 // registration route
 authRouter.post("/register", 
 // verifyCsrfProtection,
@@ -27,11 +37,11 @@ authRouter.get("/confirm-registeration", confirmationHandler_1.default);
 // change password route
 authRouter.post("/change-password", csrfProtection_1.verifyCsrfProtection, changePasswordHandler_1.default);
 // verification route
-authRouter.post("/verify-token", verifyTokenHandler_1.default);
+authRouter.get("/verify-token", verifyTokenHandler_1.default);
 // local route 1
 // authRouter.post("/login/local", logInHandler);
 // local route 2
-authRouter.post("/login/local", passport_config_1.default.authenticate('local', { failureRedirect: '/login' }), loggedinHandler_1.default);
+authRouter.post("/login/local", passport_config_1.default.authenticate('local'), loggedinHandler_1.default);
 // facebook route
 authRouter.get("/login/facebook", passport_config_1.default.authenticate('facebook', { failureRedirect: '/login', failureMessage: true, session: true }), function (req, res, next) {
     res.redirect("/dashboard");

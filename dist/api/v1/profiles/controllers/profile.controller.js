@@ -16,11 +16,11 @@ class ProfileService {
         try {
             return await profile_model_1.default.findOne({
                 where: {
-                    id: id
+                    UserId: id
                 },
                 include: {
                     model: user_model_1.default,
-                    attributes: ["id", "username"]
+                    attributes: ["id", "username", "role"]
                 }
             });
         }
@@ -55,7 +55,7 @@ class ProfileService {
     }
     async updateProfile() {
         try {
-            return await profile_model_1.default.update({ ...this.data }, { where: { id: this.data.id } });
+            return await profile_model_1.default.update({ ...this.data }, { where: { UserId: this.data.UserId } });
         }
         catch (error) {
             console.warn(error);

@@ -24,39 +24,10 @@ function createRoomHandler(req, res, next) {
             const files = req.files;
             const filenames = (0, getFileNames_1.getFilesNames)(files);
             const photos = filenames;
-            const { _csrf, ...newData } = req.body;
-            const { featured, popular, newlyAdded, recentlySold, recommended, bedrooms, bathrooms, capacity, roomNumber, price, HostelId, rating, amenities, ...rest } = newData;
-            // Assign default values after destructuring
-            const _availability = Boolean(recentlySold);
-            const _featured = Boolean(featured);
-            const _popular = Boolean(popular);
-            const _newlyAdded = Boolean(newlyAdded);
-            const _recentlySold = Boolean(recentlySold);
-            const _recommended = Boolean(recommended);
-            const _bedrooms = Number(bedrooms);
-            const _bathrooms = Number(bathrooms);
-            const _capacity = Number(capacity);
-            const _roomNumber = Number(roomNumber);
-            const _price = Number(price);
-            const _HostelId = Number(HostelId);
-            const _rating = Number(rating);
-            const _amenities = amenities.replace(/^\[|\]$/g, '').split().map((item) => item.replace(/'/g, ''));
-            // Optionally, update newData with these defaults if needed
-            newData.availability = _availability;
-            newData.featured = _featured;
-            newData.popular = _popular;
-            newData.newlyAdded = _newlyAdded;
-            newData.recentlySold = _recentlySold;
-            newData.recommended = _recommended;
-            newData.bedrooms = _bedrooms;
-            newData.bathrooms = _bathrooms;
-            newData.capacity = _capacity;
-            newData.roomNumber = _roomNumber;
-            newData.price = _price;
-            newData.HostelId = _HostelId;
-            newData.rating = _rating;
-            newData.amenities = _amenities;
-            const roomService = new room_controller_1.RoomService({ ...newData, photos });
+            const { _csrf, amenities, ...newData } = req.body;
+            const _amenities = amenities.split(',').map((item) => item.replace(/'/g, ''));
+            console.log(_amenities);
+            const roomService = new room_controller_1.RoomService({ ...newData, photos, amenities: _amenities });
             const room = await roomService.createRoom();
             if (room !== null) {
                 res.status(200).json({ status: "success", data: { room }, message: "Room created" });

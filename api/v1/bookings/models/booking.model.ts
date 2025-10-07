@@ -34,7 +34,7 @@ Booking.init({
     // },
     // checkOut: {
     //     type: DataTypes.DATE
-    // },
+    // }
     totalPrice: {
         type: DataTypes.INTEGER,
         defaultValue: 0

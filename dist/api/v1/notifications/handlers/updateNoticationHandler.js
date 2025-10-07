@@ -12,7 +12,7 @@ async function updateNotificationHandler(req, res, next) {
             res.status(200).json({ status: "success", data: { notification }, message: "Notification created" });
         }
         else {
-            res.status(200).json({ status: "success", data: null, message: "No notification created" });
+            res.status(400).json({ status: "fail", data: null, message: "No notification created" });
         }
     }
     catch (error) {

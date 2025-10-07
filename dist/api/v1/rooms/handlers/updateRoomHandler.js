@@ -8,6 +8,7 @@ const room_controller_1 = require("../controllers/room.controller");
 const multer_1 = __importDefault(require("multer"));
 const uploadFile_1 = require("../../../../utils/uploadFile");
 const getFileNames_1 = require("../utils/getFileNames");
+const room_model_1 = __importDefault(require("../models/room.model"));
 async function updateRoomHandler(req, res, next) {
     (0, uploadFile_1.uploadMultipleFiles)('photos')(req, res, async function (err) {
         if (err instanceof multer_1.default.MulterError) {
@@ -22,42 +23,18 @@ async function updateRoomHandler(req, res, next) {
         // Everything went fine, send the file name and other fields to database
         try {
             const { id } = req.params;
-            const files = req.files;
-            const filenames = (0, getFileNames_1.getFilesNames)(files);
-            const photos = filenames;
-            const { _csrf, ...newData } = req.body;
-            const { featured, popular, newlyAdded, recentlySold, recommended, bedrooms, bathrooms, capacity, roomNumber, price, HostelId, rating, amenities, ...rest } = newData;
-            // Assign default values after destructuring
-            const _availability = Boolean(recentlySold);
-            const _featured = Boolean(featured);
-            const _popular = Boolean(popular);
-            const _newlyAdded = Boolean(newlyAdded);
-            const _recentlySold = Boolean(recentlySold);
-            const _recommended = Boolean(recommended);
-            const _bedrooms = Number(bedrooms);
-            const _bathrooms = Number(bathrooms);
-            const _capacity = Number(capacity);
-            const _roomNumber = Number(roomNumber);
-            const _price = Number(price);
-            const _HostelId = Number(HostelId);
-            const _rating = Number(rating);
-            const _amenities = amenities.replace(/^\[|\]$/g, '').split().map((item) => item.replace(/'/g, ''));
-            // Optionally, update newData with these defaults if needed
-            newData.availability = _availability;
-            newData.featured = _featured;
-            newData.popular = _popular;
-            newData.newlyAdded = _newlyAdded;
-            newData.recentlySold = _recentlySold;
-            newData.recommended = _recommended;
-            newData.bedrooms = _bedrooms;
-            newData.bathrooms = _bathrooms;
-            newData.capacity = _capacity;
-            newData.roomNumber = _roomNumber;
-            newData.price = _price;
-            newData.HostelId = _HostelId;
-            newData.rating = _rating;
-            newData.amenities = _amenities;
-            const roomService = new room_controller_1.RoomService({ ...newData, photos, id });
+            const files = req?.files;
+            let photos, filenames;
+            if (files.length) {
+                filenames = (0, getFileNames_1.getFilesNames)(files);
+            }
+            else {
+                let room = await room_model_1.default.findByPk(id);
+                photos = room?.photos;
+            }
+            const { _csrf, amenities, ...newData } = req.body;
+            const _amenities = amenities.split(',').map((item) => item.replace(/'/g, ''));
+            const roomService = new room_controller_1.RoomService({ ...newData, photos, amenities: _amenities, id });
             const [affectedCount] = await roomService.editRoom();
             if (affectedCount === 1) {
                 res.status(200).json({ status: "success", data: { affectedCount }, message: "Room updated" });
@@ -67,7 +44,7 @@ async function updateRoomHandler(req, res, next) {
             }
         }
         catch (error) {
-            res.status(500).json({ status: "failure", data: null, message: "Error: " + error });
+            res.status(500).json({ status: "failure", data: null, message: "Error: " + error.message });
         }
     });
 }

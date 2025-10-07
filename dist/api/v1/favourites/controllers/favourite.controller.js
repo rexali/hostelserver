@@ -37,6 +37,53 @@ class FavoriteService {
             console.warn(error);
         }
     }
+    static async getAllFavorites(page = 1) {
+        try {
+            const offset = (page - 1) * constants_1.limit;
+            return await favorite_model_1.default.findAll({
+                limit: constants_1.limit,
+                offset,
+                include: [{
+                        model: room_model_1.default,
+                        required: false,
+                        include: [
+                            {
+                                model: hostel_model_1.default,
+                                required: false
+                            }
+                        ]
+                    }]
+            });
+        }
+        catch (error) {
+            console.warn(error);
+        }
+    }
+    static async getUserFavorites(userId, page = 1) {
+        try {
+            const offset = (page - 1) * constants_1.limit;
+            return await favorite_model_1.default.findAll({
+                limit: constants_1.limit,
+                offset,
+                where: {
+                    UserId: userId
+                },
+                include: [{
+                        model: room_model_1.default,
+                        required: false,
+                        include: [
+                            {
+                                model: hostel_model_1.default,
+                                required: false
+                            }
+                        ]
+                    }]
+            });
+        }
+        catch (error) {
+            console.warn(error);
+        }
+    }
     async createFavorite() {
         try {
             return await favorite_model_1.default.create({ ...this.favorite });

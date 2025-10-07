@@ -24,7 +24,8 @@ Message.init({
         type: sequelize_1.DataTypes.INTEGER
     },
     read: {
-        type: sequelize_1.DataTypes.BOOLEAN
+        type: sequelize_1.DataTypes.BOOLEAN,
+        defaultValue: false
     },
     createdAt: sequelize_1.DataTypes.DATE,
     updatedAt: sequelize_1.DataTypes.DATE

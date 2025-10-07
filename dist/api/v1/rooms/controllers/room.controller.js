@@ -6,9 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RoomService = void 0;
 const sequelize_1 = require("sequelize");
 const room_model_1 = __importDefault(require("../models/room.model"));
-// import Hostel from "../../hotels/models/hotel.model";
 const constants_1 = require("../../../../constants/constants");
 const hostel_model_1 = __importDefault(require("../../hostels/models/hostel.model"));
+const review_model_1 = __importDefault(require("../../reviews/model/review.model"));
+const user_model_1 = __importDefault(require("../../auth/models/user.model"));
 class RoomService {
     constructor(data) {
         this.data = data;
@@ -44,10 +45,26 @@ class RoomService {
     static async getRooms(page = 1) {
         try {
             const offset = (page - 1) * constants_1.limit;
-            return await room_model_1.default.findAll({
+            let rooms = await room_model_1.default.findAll({
                 limit: constants_1.limit,
                 offset,
+                include: [
+                    {
+                        model: review_model_1.default,
+                        include: [
+                            {
+                                model: user_model_1.default,
+                                attributes: ["id", "username", "role"]
+                            }
+                        ]
+                    },
+                    {
+                        model: hostel_model_1.default,
+                    }
+                ],
+                // raw:true
             });
+            return rooms;
         }
         catch (error) {
             console.warn(error);
@@ -92,28 +109,34 @@ class RoomService {
     ;
     static async getRoom(id) {
         try {
-            return await room_model_1.default.findOne({ where: { id: id } });
+            return await room_model_1.default.findOne({
+                where: { id: id },
+                include: [{
+                        model: review_model_1.default
+                    }]
+            });
         }
         catch (error) {
             console.warn(error);
         }
     }
     ;
-    static async searchRooms(term, page) {
+    static async searchRooms(searchedTerm, page) {
         try {
             const offset = (page - 1) * constants_1.limit;
-            return await room_model_1.default.findAll({
+            let rooms = await room_model_1.default.findAll({
                 limit: constants_1.limit,
                 offset,
                 where: {
-                    roomType: {
-                        [sequelize_1.Op.like]: `%${term}%`,
+                    location: {
+                        [sequelize_1.Op.like]: `%${searchedTerm}`,
                     },
                 },
                 include: {
                     model: hostel_model_1.default,
                 }
             });
+            return rooms;
         }
         catch (error) {
             console.warn(error);

@@ -8,6 +8,7 @@ const config_1 = require("../../../../config");
 const federation_model_1 = __importDefault(require("./federation.model"));
 const hostel_model_1 = __importDefault(require("../../hostels/models/hostel.model"));
 const booking_model_1 = __importDefault(require("../../bookings/models/booking.model"));
+const review_model_1 = __importDefault(require("../../reviews/model/review.model"));
 class User extends sequelize_1.Model {
 }
 ;
@@ -28,7 +29,8 @@ User.init({
         type: sequelize_1.DataTypes.STRING
     },
     permission: {
-        type: sequelize_1.DataTypes.ARRAY(sequelize_1.DataTypes.STRING)
+        type: sequelize_1.DataTypes.ARRAY(sequelize_1.DataTypes.STRING),
+        defaultValue: ["read", "write"],
     },
     status: {
         type: sequelize_1.DataTypes.ENUM("yes", "no"),
@@ -49,4 +51,6 @@ User.hasMany(hostel_model_1.default);
 hostel_model_1.default.belongsTo(User);
 User.hasMany(booking_model_1.default);
 booking_model_1.default.belongsTo(User);
+User.hasMany(review_model_1.default);
+review_model_1.default.belongsTo(User);
 exports.default = User;

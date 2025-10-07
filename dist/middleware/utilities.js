@@ -8,7 +8,8 @@ exports.logOut = logOut;
 const config_1 = require("../config");
 function getCsrfToken(req, res, next) {
     res.locals.token = req.csrfToken();
-    res.cookie("_csrf2", req.csrfToken());
+    res.clearCookie("_csrf");
+    res.cookie("_csrf", req.csrfToken());
     next();
 }
 ;
