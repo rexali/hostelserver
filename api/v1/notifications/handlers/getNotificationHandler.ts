@@ -10,7 +10,7 @@ export async function getNotificationHandler(req: Request, res: Response, next: 
         if (notification !== null || undefined) {
             res.status(200).json({ status: "success", data: { notification}, message: "Notifications found" })
         } else {
-            res.status(200).json({ status: "success", data: null, message: "No notification found" })
+            res.status(400).json({ status: "success", data: null, message: "No notification found" })
         }
     } catch (error) {
         res.status(500).json({ status: "failure", data: null, message: "Error: " + error })

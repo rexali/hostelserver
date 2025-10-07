@@ -1,9 +1,10 @@
-import { col, fn, Op } from "sequelize";
+import { col, fn, Op, where } from "sequelize";
 import Room from "../models/room.model";
 import { RoomType } from "../types/types";
 import { limit } from "../../../../constants/constants";
 import Hostel from "../../hostels/models/hostel.model";
 import Review from "../../reviews/model/review.model";
+import User from "../../auth/models/user.model";
 
 export class RoomService {
 
@@ -42,26 +43,23 @@ export class RoomService {
             const offset = (page - 1) * limit;
 
             let rooms = await Room.findAll({
-                limit: 2,
+                limit,
                 offset,
-                // attributes: {
-                //     include:
-                //         [
-                //             [fn("AVG", col("Review.rating")), "averageRating"],
-                //             [fn("COUNT", col("Review.id")), "reviewCount"],
-                //         ],
-                // },
-                include: {
-                    model: Review,
-                    // as: "Reviews",
-                    // attributes: [
-                    //      "id",
-                    //      "RoomId",
-                    //      "content",
-                    //      "rating"
-                    // ]
-                },
-                // group: ["Review.RoomId"]
+                include: [
+                    {
+                        model: Review,
+                        include: [
+                            {
+                                model: User,
+                                attributes: ["id", "username", "role"]
+                            }
+                        ]
+                    },
+                    {
+                        model: Hostel,
+                    }
+                ],
+                // raw:true
             });
 
             return rooms;
@@ -107,27 +105,33 @@ export class RoomService {
 
     static async getRoom(id: number) {
         try {
-            return await Room.findOne({ where: { id: id } })
+            return await Room.findOne({
+                where: { id: id },
+                include: [{
+                    model: Review
+                }]
+            })
         } catch (error) {
             console.warn(error);
         }
     };
 
-    static async searchRooms(term: string, page: number) {
+    static async searchRooms(searchedTerm: string, page: number) {
         try {
             const offset = (page - 1) * limit
-            return await Room.findAll({
+            let rooms= await Room.findAll({
                 limit,
                 offset,
                 where: {
                     location: {
-                        [Op.like]: `%${term}%`,
+                        [Op.like]: `%${searchedTerm}`,
                     },
                 },
                 include: {
                     model: Hostel,
                 }
             });
+            return rooms;
         } catch (error) {
             console.warn(error);
         }

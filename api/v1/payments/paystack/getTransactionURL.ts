@@ -12,12 +12,14 @@ export const getTransactionUrl = async (req:Request, res:Response) => {
             }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + process.env.PAYSTACK_SECRET,
+                'Authorization': 'Bearer ' + process.env.PAYSTACK_SECRET_KEY,
             }
         });
-
-        res.status(200).json(data)
-    } catch (error) {
+        console.log(data);
+        
+        res.status(200).json({status:"success", data: data.data, message:"Transaction url created"})
+    } catch (error:any) {
         console.warn(error);
+        res.status(200).json({status:"success", data:null, message:"Error! "+error.message})
     }
 }

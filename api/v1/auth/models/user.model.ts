@@ -3,6 +3,7 @@ import { sequelize } from "../../../../config";
 import Federation from "./federation.model";
 import Hostel from "../../hostels/models/hostel.model";
 import Booking from "../../bookings/models/booking.model";
+import Review from "../../reviews/model/review.model";
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
 
@@ -62,5 +63,8 @@ Hostel.belongsTo(User);
 
 User.hasMany(Booking);
 Booking.belongsTo(User);
+
+User.hasMany(Review);
+Review.belongsTo(User);
 
 export default User;

@@ -34,6 +34,19 @@ export class NotificationService {
 
     }
 
+    static async getUserNotifications(userId: number, page: number = 1) {
+        try {
+            const offset = (page - 1) * limit;
+            return await Notification.findAll({
+                limit,
+                offset
+            });
+        } catch (error) {
+            console.warn(error);
+        }
+
+    }
+
     async createNotification() {
         try {
             return await Notification.create({ ...this.data });

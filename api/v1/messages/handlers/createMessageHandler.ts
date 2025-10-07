@@ -22,7 +22,7 @@ export async function createMessageHandler(req: Request, res: Response, next: Ne
             // }
             res.status(200).json({ status: "success", data: { message }, message: "Message sent" })
         } else {
-            res.status(200).json({ status: "success", data: null, message: "No message sent" })
+            res.status(400).json({ status: "fail", data: null, message: "No message sent" })
         }
     } catch (error) {
         res.status(500).json({ status: "failure", data: null, message: "Error: " + error })

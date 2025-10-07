@@ -23,6 +23,8 @@ import notificationRouter from "./api/v1/notifications/routes/notification.route
 import bookingRouter from "./api/v1/bookings/routes/booking.routes";
 import reviewRouter from "./api/v1/reviews/routes/review.routes";
 import { searchRoomsHandler } from "./api/v1/rooms/handlers/searchRoomsHandler";
+import { getTransactionUrl } from "./api/v1/payments/paystack/getTransactionURL";
+import { verifyTransaction } from "./api/v1/payments/paystack/verifyTransaction";
 
 declare module 'express-session' {
   interface SessionData {
@@ -123,7 +125,7 @@ app.use(config.routes.bookings, bookingRouter);
 app.use(config.routes.bookings, bookingRouter);
 // review routes
 app.use(config.routes.reviews, reviewRouter);
-// review routes
+// search routes
 app.use(config.routes.search, searchRoomsHandler);
 // server home
 app.get(config.routes.home, (req: Request, res: Response) => { res.send('Welcome to Hostel Booking App Server') });
@@ -134,6 +136,10 @@ app.get(config.routes.csrf, (req: Request, res: Response) => {
   // res.cookie('_csrf', csrf);
   res.json({ status: 'success', message: 'token generated', data: { _csrf: req.csrfToken() } });
 });
+// paystack routes
+app.use(config.routes.paystack_transaction_url, getTransactionUrl);
+app.use(config.routes.paystack_verify_transaction, verifyTransaction);
+
 
 // app.get(config.routes.home, (req: Request, res: Response) => {
 //   // res.cookie

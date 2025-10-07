@@ -64,7 +64,7 @@ export class AuthService {
         return await User.findAll({
             limit,
             offset,
-            attributes: ["id", "username"]
+            attributes: ["id", "username", "role"]
         });
     }
 

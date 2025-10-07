@@ -15,7 +15,6 @@ class Room extends Model<InferAttributes<Room>, InferCreationAttributes<Room>> {
     declare id?: CreationOptional<number>;
     declare name: string;
     declare roomNumber: number;
-    declare roomType: string;
     declare type: string;
     declare price: number;
     declare location: string;
@@ -47,9 +46,7 @@ Room.init({
     roomNumber: {
         type: DataTypes.INTEGER
     },
-    roomType: {
-        type: DataTypes.STRING
-    },
+    
     type: {
         type: DataTypes.STRING
     },

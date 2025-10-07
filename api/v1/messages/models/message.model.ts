@@ -33,7 +33,8 @@ Message.init({
         type: DataTypes.INTEGER
     },
     read: {
-        type: DataTypes.BOOLEAN
+        type: DataTypes.BOOLEAN,
+        defaultValue:false
     },
 
     createdAt: DataTypes.DATE,

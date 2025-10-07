@@ -50,11 +50,13 @@ export class BookingService {
                     {
                         model: Room,
                         required: false,
+                        attributes: ["id", "name", "type", "price", "createdAt"]
                     },
 
                     {
                         model: User,
                         required: false,
+                        attributes: ["id", "role", "username"]
                     }
                 ]
             });
@@ -72,28 +74,18 @@ export class BookingService {
                 where: {
                     UserId: userId
                 },
-                include: [{
-                    model: User,
-                    attributes: ["id", "username"],
-                    required: false
-                },
-                {
-                    model: Room,
-                    required: false,
-                    include: [
-                        {
-                            model: Hostel,
-                            required: false,
-                            include: [
-                                {
-                                    model: User,
-                                    attributes: ["id", "username"],
-                                }
-                            ]
-                        },
-                    ]
+                include: [
+                    {
+                        model: Room,
+                        required: false,
+                        attributes: ["id", "name", "type", "price", "createdAt"]
+                    },
 
-                }
+                    {
+                        model: User,
+                        required: false,
+                        attributes: ["id", "role", "username"]
+                    }
                 ]
             });
         } catch (error) {

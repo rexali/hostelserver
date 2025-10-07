@@ -16,6 +16,7 @@ const config = {
     host_dev: process.env.DB_HOST as string,
     dialect_dev: 'postgres' as any,
 
+
     port: process.env.PORT || 3000,
     base_url: "http://localhost:3000",
     secret: 'secret',
@@ -38,7 +39,9 @@ const config = {
         transactions: '/api/v1/transactions',
         reports: '/api/v1/reports',
         csrf: '/csrf',
-        search: '/search'
+        search: '/search',
+        paystack_transaction_url: "/api/v1/get_transaction_url",
+        paystack_verify_transaction: "/api/v1/verify_transaction",
     },
 }
 

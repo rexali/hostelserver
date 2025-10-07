@@ -5,25 +5,30 @@ import { getPopularRooms } from "../helpers/getPopularRooms";
 import { getRecommendedRooms } from "../helpers/getRecommendedRooms";
 import { getRecentlyBookedRooms } from "../helpers/recentlyBookedRooms";
 import { getFeaturedRooms } from "../helpers/getFeaturedRooms";
+import Room from "../models/room.model";
 
 
 export async function getRoomsHandler(req: Request, res: Response, next: NextFunction) {
     try {
         const term = req.query?.term as string;
-        const rooms = await RoomService.getRooms();
+        const page = req.query?.page as unknown as number;
+        const rooms = await RoomService.getRooms(page);
+        const roomCount = await Room.count({ col: "id" });
 
         if (rooms !== null) {
             if (rooms?.length) {
                 res.status(200).json({
-                    status: "success", 
+                    status: "success",
                     data: {
+                        roomCount,
                         rooms,
                         newRooms: await getNewlyAddedRooms(),
                         popularRooms: await getPopularRooms(),
                         recommendedRooms: await getRecommendedRooms(term),
                         bookedRooms: await getRecentlyBookedRooms(),
                         featuredRooms: await getFeaturedRooms()
-                    }, message: "Room(s) found"
+                    }, 
+                    message: "Room(s) found"
                 })
             } else {
                 res.status(404).json({ status: "success", data: [], message: "No room found" })

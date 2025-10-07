@@ -10,9 +10,16 @@ import logInHandler from "../handlers/logInHandler";
 import passport from "../passport.config";
 import loggedinHandler from "../handlers/loggedinHandler";
 import { removeUserHandler } from "../handlers/removeUserHandler";
+import { getAllUsersHandler } from "../handlers/getAllUsersHandler";
 
 const authRouter = express.Router();
 
+// get all users account
+authRouter.get(
+    "/users",
+    // verifyCsrfProtection,
+    getAllUsersHandler
+);
 // remove user account
 authRouter.delete(
     "/remove",
