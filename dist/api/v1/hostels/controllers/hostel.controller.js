@@ -50,7 +50,7 @@ class HostelService {
                 offset,
                 include: {
                     model: user_model_1.default,
-                    attributes: ["id", "username"]
+                    attributes: ["id", "username", "role"]
                 },
             });
         }
@@ -63,10 +63,15 @@ class HostelService {
         try {
             return await hostel_model_1.default.findOne({
                 where: { id: id },
-                include: {
-                    model: user_model_1.default,
-                    attributes: ["id", "username"]
-                }
+                include: [
+                    {
+                        model: user_model_1.default,
+                        attributes: ["id", "username", "role"]
+                    },
+                    {
+                        model: room_model_1.default,
+                    }
+                ],
             });
         }
         catch (error) {
@@ -84,7 +89,7 @@ class HostelService {
                 include: [
                     {
                         model: user_model_1.default,
-                        attributes: ["id", "username"]
+                        attributes: ["id", "username", "role"]
                     },
                     {
                         model: room_model_1.default,

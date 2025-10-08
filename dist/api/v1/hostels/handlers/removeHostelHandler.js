@@ -5,12 +5,12 @@ const hostel_controller_1 = require("../controllers/hostel.controller");
 async function removeHostelHandler(req, res, next) {
     try {
         const { id } = req.params;
-        const hotel = await hostel_controller_1.HostelService.removeHostel(id);
-        if (hotel !== null) {
-            res.status(200).json({ status: "success", data: { hotel }, message: "Hotel deleted" });
+        const hostel = await hostel_controller_1.HostelService.removeHostel(id);
+        if (hostel !== null) {
+            res.status(200).json({ status: "success", data: { hostel }, message: "Hotel deleted" });
         }
         else {
-            res.status(200).json({ status: "success", data: null, message: "No hotel deleted" });
+            res.status(200).json({ status: "success", data: null, message: "No hostel deleted" });
         }
     }
     catch (error) {

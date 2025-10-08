@@ -25,7 +25,7 @@ async function updateRoomHandler(req, res, next) {
             const { id } = req.params;
             const files = req?.files;
             let photos, filenames;
-            if (files.length) {
+            if (files?.length) {
                 filenames = (0, getFileNames_1.getFilesNames)(files);
             }
             else {

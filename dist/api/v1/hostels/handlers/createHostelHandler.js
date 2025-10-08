@@ -30,13 +30,13 @@ function createHostelHandler(req, res, next) {
                     photo: photo,
                     document: document
                 };
-                const hotelService = new hostel_controller_1.HostelService(data.id, data);
+                const hotelService = new hostel_controller_1.HostelService(data?.id, data);
                 const hotel = await hotelService.createHostel();
                 if (hotel !== null) {
                     res.status(200).json({ status: "success", data: { hotel }, message: "Hostel created" });
                 }
                 else {
-                    res.status(200).json({ status: "success", data: null, message: "No hostel created" });
+                    res.status(400).json({ status: "fail", data: null, message: "No hostel created" });
                 }
             }
             else {
@@ -44,7 +44,7 @@ function createHostelHandler(req, res, next) {
             }
         }
         catch (error) {
-            res.status(500).json({ status: "failure", data: null, message: "Error: " + error });
+            res.status(500).json({ status: "fail", data: null, message: "Error: " + error });
         }
     });
 }
