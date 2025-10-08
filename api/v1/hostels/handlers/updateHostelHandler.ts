@@ -1,9 +1,9 @@
 import { HostelService } from "../controllers/hostel.controller"
 import { NextFunction, Request, Response } from "express";
-import { HostelType } from "../types/types";
 import multer from "multer";
 import { uploadFiles } from "../../../../utils/uploadFile";
 import { filterFilesByName } from "../utils/filterFilesByName";
+import Hostel from "../models/hostel.model";
 
 
 export async function updateHostelHandler(req: Request, res: Response, next: NextFunction) {
@@ -17,28 +17,34 @@ export async function updateHostelHandler(req: Request, res: Response, next: Nex
         };
         // Everything went fine, send the file name and other fields to database
         try {
+            let photo, document;
             if (req.files?.length) {  // loop thru the file and add
-                // const data = req.body as HostelType;
-                let photo = filterFilesByName(req.files, 'photo');
-                let document = filterFilesByName(req.files, 'document');
-                const data = {
-                    ...req.body,
-                    photo: photo,
-                    document: document
-                }
-                const { id } = req.params as unknown as { id: number }
-                const hotelService = new HostelService(id, data);
-                const [affectedCount] = await hotelService.updateHostel() as [affectedCount: number];
-                if (affectedCount === 1) {
-                    res.status(200).json({ status: "success", data: { affectedCount }, message: "Hostel updated" })
-                } else {
-                    res.status(200).json({ status: "success", data: null, message: "Not updated" })
-                }
+                photo = filterFilesByName(req.files, 'photo');
+                document = filterFilesByName(req.files, 'document');
+                // if (req.files?.length==1) {
+                //     req.files.map((file:any)=>file.name==='photo')
+                // }
             } else {
-                console.log(req.files);
+                let hostel = await Hostel.findByPk(req.body?.hostelId);
+                photo = hostel?.photo;
+                document = hostel?.document;
             }
-        } catch (error) {
-            res.status(500).json({ status: "failed", data: null, message: "Error: " + error })
+            const data = {
+                ...req.body,
+                photo,
+                document
+            }
+            const { id } = req.params as unknown as { id: number }
+            const hotelService = new HostelService(id, data);
+            const [affectedCount] = await hotelService.updateHostel() as [affectedCount: number];
+            if (affectedCount === 1) {
+                res.status(200).json({ status: "success", data: { affectedCount }, message: "Hostel updated" })
+            } else {
+                res.status(400).json({ status: "fail", data: null, message: "Hostel not updated" })
+            }
+
+        } catch (error: any) {
+            res.status(500).json({ status: "fail", data: null, message: "Error: " + error.message })
         }
     });
 

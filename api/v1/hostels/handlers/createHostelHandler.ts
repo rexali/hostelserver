@@ -25,18 +25,18 @@ export function createHostelHandler(req: Request, res: Response, next: NextFunct
                     photo: photo,
                     document: document
                 }
-                const hotelService = new HostelService(data.id, data);
+                const hotelService = new HostelService(data?.id, data);
                 const hotel = await hotelService.createHostel();
                 if (hotel !== null) {
                     res.status(200).json({ status: "success", data: { hotel }, message: "Hostel created" })
                 } else {
-                    res.status(200).json({ status: "success", data: null, message: "No hostel created" })
+                    res.status(400).json({ status: "fail", data: null, message: "No hostel created" })
                 }
             } else {
                 console.log(req.files);
             }
         } catch (error) {
-            res.status(500).json({ status: "failure", data: null, message: "Error: " + error })
+            res.status(500).json({ status: "fail", data: null, message: "Error: " + error })
         }
     })
 }

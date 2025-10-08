@@ -25,7 +25,7 @@ export class HostelService {
 
     async updateHostel() {
         try {
-            return await Hostel.update({ ...this.data }, { where: { id: this.id } })
+            return await Hostel.update({ ...this.data }, { where: {id: this.id } })
         } catch (error) {
             console.warn(error);
         }
@@ -47,7 +47,7 @@ export class HostelService {
                 offset,
                 include: {
                     model: User,
-                    attributes: ["id", "username"]
+                    attributes: ["id", "username", "role"]
                 },
 
             });
@@ -60,10 +60,15 @@ export class HostelService {
         try {
             return await Hostel.findOne({
                 where: { id: id },
-                include: {
-                    model: User,
-                    attributes: ["id", "username"]
-                }
+                include: [
+                    {
+                        model: User,
+                        attributes: ["id", "username", "role"]
+                    },
+                    {
+                        model: Room,
+                    }
+                ],
             })
         } catch (error) {
             console.warn(error);
@@ -80,7 +85,7 @@ export class HostelService {
                 include: [
                     {
                         model: User,
-                        attributes: ["id", "username"]
+                        attributes: ["id", "username", "role"]
                     },
                     {
                         model: Room,

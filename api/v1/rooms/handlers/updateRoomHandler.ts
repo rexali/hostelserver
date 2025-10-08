@@ -21,7 +21,7 @@ export async function updateRoomHandler(req: Request, res: Response, next: NextF
             const { id } = req.params as unknown as { id: number };
             const files = req?.files as any;
             let photos, filenames;
-            if (files.length) {
+            if (files?.length) {
                 filenames = getFilesNames(files);
             } else {
                 let room = await Room.findByPk(id);
