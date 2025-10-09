@@ -30,8 +30,8 @@ const getTransactionURL_1 = require("./api/v1/payments/paystack/getTransactionUR
 const verifyTransaction_1 = require("./api/v1/payments/paystack/verifyTransaction");
 const app = (0, express_1.default)();
 const corsOption = {
-    origin: "http://localhost:5173",
-    // origin: "https://hostel4students.vercel.app", http://localhost:5173/auth
+    // origin: "http://localhost:5173",
+    origin: "https://hostel4students.vercel.app",
     credentials: true,
     // methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
 };
