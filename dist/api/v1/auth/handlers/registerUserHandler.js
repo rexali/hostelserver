@@ -94,7 +94,7 @@ async function registerUserHandler(req, res) {
             }).catch(error => {
                 console.warn(error);
             });
-            if (user) {
+            if (user !== null) {
                 res.status(200).json({
                     status: 'success',
                     data: {
@@ -103,9 +103,10 @@ async function registerUserHandler(req, res) {
                             role: user.role,
                             permission: user.permission,
                             status: user.status,
-                            code: user.code
+                            code: user.code,
                         }
-                    }, messsage: 'Registeration successful'
+                    },
+                    messsage: 'Registeration successful'
                 });
             }
             else {

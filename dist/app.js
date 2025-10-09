@@ -10,7 +10,6 @@ const notFoundHandler_1 = require("./middleware/notFoundHandler");
 const express_partials_1 = __importDefault(require("express-partials"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const express_session_1 = __importDefault(require("express-session"));
-const csurf_1 = __importDefault(require("csurf"));
 const cors_1 = __importDefault(require("cors"));
 const utilities_1 = require("./middleware/utilities");
 const connect_flash_1 = __importDefault(require("connect-flash"));
@@ -31,7 +30,8 @@ const getTransactionURL_1 = require("./api/v1/payments/paystack/getTransactionUR
 const verifyTransaction_1 = require("./api/v1/payments/paystack/verifyTransaction");
 const app = (0, express_1.default)();
 const corsOption = {
-    origin: "https://hostel4students.vercel.app",
+    origin: "http://localhost:5173",
+    // origin: "https://hostel4students.vercel.app", http://localhost:5173/auth
     credentials: true,
     // methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
 };
@@ -54,7 +54,7 @@ app.use((0, cookie_parser_1.default)(config_1.config.secret));
 app.use((0, express_session_1.default)({
     secret: config_1.config.secret,
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: false,
     // cookie:{
     //   secure:true,
     // }
@@ -66,7 +66,7 @@ app.use(passport_config_1.default.initialize());
 app.use(passport_config_1.default.session());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
-app.use((0, csurf_1.default)());
+// app.use(csrf());
 // app.use(csrf({ cookie: true }));
 // app.use(getCsrfToken);
 app.use(utilities_1.authenticated);
@@ -124,9 +124,17 @@ app.get(config_1.config.routes.home, (req, res) => { res.send('Welcome to Hostel
 app.use(config_1.config.routes.healthz, (req, res) => { res.send("I am healthy"); });
 // get csrf token route
 app.get(config_1.config.routes.csrf, (req, res) => {
-    // res.cookie('_csrf', csrf);
+    // let XSRF_TOKEN = req.csrfToken();
+    // res.cookie('_csrf', XSRF_TOKEN);
+    console.log(app.locals.token, 1);
     res.json({ status: 'success', message: 'token generated', data: { _csrf: req.csrfToken() } });
 });
+// for Express of typical SPA
+// app.all("*", function name(req, res) {
+//   let XSRF_TOKEN = req.csrfToken();
+//   res.cookie('XSRF-TOKEN', XSRF_TOKEN);
+//   res.render("index")
+// })
 // paystack routes
 app.use(config_1.config.routes.paystack_transaction_url, getTransactionURL_1.getTransactionUrl);
 app.use(config_1.config.routes.paystack_verify_transaction, verifyTransaction_1.verifyTransaction);

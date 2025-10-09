@@ -7,9 +7,11 @@ exports.auth = auth;
 exports.logOut = logOut;
 const config_1 = require("../config");
 function getCsrfToken(req, res, next) {
-    res.locals.token = req.csrfToken();
+    let token = req.csrfToken();
+    console.log(token, 2);
+    res.locals.token = token;
     res.clearCookie("_csrf");
-    res.cookie("_csrf", req.csrfToken());
+    res.cookie("_csrf", token);
     next();
 }
 ;
