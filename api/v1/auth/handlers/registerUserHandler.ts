@@ -7,7 +7,6 @@ import { v4 as uuidV4 } from "uuid";
 import { Request, Response, NextFunction } from "express";
 import { escape } from "html-escaper";
 import { ProfileService } from "../../profiles/controllers/profile.controller";
-import { profile } from "console";
 
 const mutex = new Mutex();
 /**
@@ -111,7 +110,7 @@ export default async function registerUserHandler(req: Request, res: Response) {
                 console.warn(error);
             });
 
-            if (user) {
+            if (user!==null) {
 
                 res.status(200).json({
                     status: 'success',
@@ -121,9 +120,10 @@ export default async function registerUserHandler(req: Request, res: Response) {
                             role: user.role,
                             permission: user.permission,
                             status: user.status,
-                            code: user.code
+                            code: user.code,
                         }
-                    }, messsage: 'Registeration successful'
+                    }, 
+                    messsage: 'Registeration successful'
                 });
             } else {
                 res.status(400).json({ status: 'fail', data: null, messsage: 'Try again' });
