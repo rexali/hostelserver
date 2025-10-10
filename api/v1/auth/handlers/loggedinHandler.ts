@@ -14,7 +14,7 @@ export default function loggedinHandler(req: Request, res: Response, next: NextF
             // return res.redirect('/login') 
         } else {
             // set token cookie if you want e.g.,
-            const userToken = req.user as { token: string }
+            const userToken = req.user as { token: string }            
             res.cookie("token", userToken.token);
             req.session.isAuthenticated = true;
             res.status(200).json({ status: "success", data: { user: req.user }, message: "Login successful" });

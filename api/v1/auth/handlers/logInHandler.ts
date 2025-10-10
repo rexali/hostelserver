@@ -21,11 +21,11 @@ export default function logInHandler(req: Request, res: Response, next: NextFunc
                 // return res.redirect('/signin') 
             } else {
                 // set token cookie if you want e.g.,
-                res.cookie("token", user.token);
+                res.cookie("token", user?.token);
                 req.session.isAuthenticated = true;
                 req.user = { ...user };
-
-                res.status(200).json({ status: "success", data: { token: user.token }, message: "Login successful" });
+                
+                res.status(200).json({ status: "success", data: { token: user?.token }, message: "Login successful" });
                 // res.redirect('/dashboard');
             }
         }

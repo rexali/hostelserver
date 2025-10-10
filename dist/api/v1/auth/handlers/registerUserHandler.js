@@ -10,7 +10,7 @@ const auth_controller_1 = require("../controllers/auth.controller");
 const hashCheckPassword_1 = require("../utils/hashCheckPassword");
 const uuid_1 = require("uuid");
 const html_escaper_1 = require("html-escaper");
-const profile_controller_1 = require("../../profiles/controllers/profile.controller");
+const profile_model_1 = __importDefault(require("../../profiles/models/profile.model"));
 const mutex = new async_mutex_1.Mutex();
 /**
  * Add new user
@@ -82,28 +82,27 @@ async function registerUserHandler(req, res) {
             };
             const authService = new auth_controller_1.AuthService(authData);
             const user = await authService.createUser();
-            // enter to profile
-            profile_controller_1.ProfileService.createProfile({
-                name: userData.name,
-                UserId: user.id,
-                phone: userData.phone,
-                address: userData.address,
-                localGovt: userData.localGovt,
-                state: userData.state,
-            }).then(profile => {
-            }).catch(error => {
-                console.warn(error);
-            });
             if (user !== null) {
+                // enter to profile
+                let profile = await profile_model_1.default.create({
+                    name: userData.name,
+                    UserId: user?.id,
+                    phone: userData.phone,
+                    address: userData.address,
+                    localGovt: userData.localGovt,
+                    state: userData.state,
+                });
                 res.status(200).json({
                     status: 'success',
                     data: {
                         user: {
-                            username: user.username,
-                            role: user.role,
-                            permission: user.permission,
-                            status: user.status,
-                            code: user.code,
+                            username: user?.username,
+                            role: user?.role,
+                            permission: user?.permission,
+                            status: user?.status,
+                            code: user?.code,
+                            userId: user?.id,
+                            profile
                         }
                     },
                     messsage: 'Registeration successful'

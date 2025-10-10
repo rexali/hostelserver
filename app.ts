@@ -34,8 +34,7 @@ declare module 'express-session' {
 
 const app: Application = express();
 const corsOption = {
-  // origin: "http://localhost:5173",
-  origin: "https://hostel4students.vercel.app",
+  origin: ["http://localhost:5173", "https://hostel4students.vercel.app"],
   credentials: true,
   // methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
 }
@@ -59,7 +58,7 @@ app.use(cookieParser(config.secret));
 app.use(session({
   secret: config.secret,
   resave: true,
-  saveUninitialized: false,
+  saveUninitialized: true,
   // cookie:{
   //   secure:true,
   // }
@@ -136,9 +135,9 @@ app.use(config.routes.healthz, (req: Request, res: Response) => { res.send("I am
 app.get(config.routes.csrf, (req: Request, res: Response) => {
   // let XSRF_TOKEN = req.csrfToken();
   // res.cookie('_csrf', XSRF_TOKEN);
-  console.log(app.locals.token,1);
-  
-  res.json({ status: 'success', message: 'token generated', data: { _csrf: req.csrfToken()} });
+  console.log(app.locals.token, 1);
+
+  res.json({ status: 'success', message: 'token generated', data: { _csrf: req.csrfToken() } });
 });
 // for Express of typical SPA
 // app.all("*", function name(req, res) {

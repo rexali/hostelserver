@@ -10,10 +10,17 @@ class AuthService {
         this.data = data;
     }
     async createUser() {
-        let { password, ...rest } = await user_model_1.default.create({
-            ...this.data,
-        });
-        return rest;
+        try {
+            let user = await user_model_1.default.create({
+                ...this.data,
+            }, {
+                raw: true,
+            });
+            return user;
+        }
+        catch (error) {
+            console.warn(error);
+        }
     }
     static async updateUserPassword(data) {
         return await user_model_1.default.update({

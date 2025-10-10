@@ -4,7 +4,6 @@ import { ProfileType } from "../types/types";
 import { uploadFile } from "../../../../utils/uploadFile";
 import multer from "multer";
 
-
 export async function createProfileHandler(req: Request, res: Response, next: NextFunction) {
     uploadFile('image')(req, res, async function (err) {
         if (err instanceof multer.MulterError) {

@@ -30,8 +30,7 @@ const getTransactionURL_1 = require("./api/v1/payments/paystack/getTransactionUR
 const verifyTransaction_1 = require("./api/v1/payments/paystack/verifyTransaction");
 const app = (0, express_1.default)();
 const corsOption = {
-    // origin: "http://localhost:5173",
-    origin: "https://hostel4students.vercel.app",
+    origin: ["http://localhost:5173", "https://hostel4students.vercel.app"],
     credentials: true,
     // methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
 };
@@ -54,7 +53,7 @@ app.use((0, cookie_parser_1.default)(config_1.config.secret));
 app.use((0, express_session_1.default)({
     secret: config_1.config.secret,
     resave: true,
-    saveUninitialized: false,
+    saveUninitialized: true,
     // cookie:{
     //   secure:true,
     // }

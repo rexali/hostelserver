@@ -10,14 +10,20 @@ export class AuthService {
     }
 
     async createUser() {
-        
-        let { password, ...rest } = await User.create(
-            {
-                ...this.data,
-            },
-        );
+        try {
+            let user = await User.create(
+                {
+                    ...this.data,
+                },
+                {
+                    raw: true,
+                }
+            );
 
-        return rest;
+            return user;
+        } catch (error) {
+            console.warn(error);
+        }
     }
 
     static async updateUserPassword(data: { password: string, username: string }) {
