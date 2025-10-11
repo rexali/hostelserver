@@ -5,14 +5,11 @@ import TwitterStrategy from 'passport-twitter';
 import LinkedInStrategy from 'passport-linkedin-oauth2';
 import GoogleStrategy from "passport-google-oauth20";
 import dotenv from "dotenv";
-import User from "../auth/models/user.model";
-import Federation from "./models/federation.model";
 import AppleStrategy  from 'passport-apple';
 import path from "path";
 import { authenticateUserHelper } from "../auth/helpers/authenticateUserHelper";
 // var AppleStrategy2  = require("passport-appleid");
 dotenv.config();
-
 // use local strategy
 passport.use(new LocalStrategy.Strategy(authenticateUserHelper));
 
