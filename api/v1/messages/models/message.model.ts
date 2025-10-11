@@ -1,6 +1,6 @@
 import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequelize";
 
-import { sequelize} from "../../../../config";
+import { sequelize } from "../../../../config";
 
 class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Message>> {
     declare id: CreationOptional<number>;
@@ -9,6 +9,10 @@ class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Me
     declare recipientId: number
     declare senderId: number;
     declare read: boolean;
+    declare fullName: CreationOptional<string>
+    declare phone: CreationOptional<string>
+    declare email: CreationOptional<string>
+    declare inquiryType: CreationOptional<string>
     declare updatedAt: CreationOptional<Date>;
     declare createdAt: CreationOptional<Date>;
 }
@@ -25,6 +29,18 @@ Message.init({
     content: {
         type: DataTypes.STRING
     },
+    fullName: {
+        type: DataTypes.STRING
+    },
+     email: {
+        type: DataTypes.STRING
+    },
+     inquiryType: {
+        type: DataTypes.STRING
+    },
+     phone: {
+        type: DataTypes.STRING
+    },
     recipientId: {
         type: DataTypes.INTEGER
     }
@@ -34,7 +50,7 @@ Message.init({
     },
     read: {
         type: DataTypes.BOOLEAN,
-        defaultValue:false
+        defaultValue: false
     },
 
     createdAt: DataTypes.DATE,

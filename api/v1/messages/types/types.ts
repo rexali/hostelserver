@@ -3,11 +3,14 @@ type MessageType = {
     subject: string,
     content: string,
     recipientId: number,
-    senderId:number,
-    read:boolean,
+    senderId: number,
+    read: boolean,
+    fullName?: string
+    phone?: string
+    email?: string
+    inquiryType?: string,
     createdAt?: Date,
     updatedAt?: Date
-
 }
 
 export { MessageType }

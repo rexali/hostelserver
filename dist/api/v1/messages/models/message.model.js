@@ -17,6 +17,18 @@ Message.init({
     content: {
         type: sequelize_1.DataTypes.STRING
     },
+    fullName: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    email: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    inquiryType: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    phone: {
+        type: sequelize_1.DataTypes.STRING
+    },
     recipientId: {
         type: sequelize_1.DataTypes.INTEGER
     },
