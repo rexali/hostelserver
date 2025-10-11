@@ -8,7 +8,7 @@
     "start": "node dist/app.js",
     "dev": "nodemon --ext ts,js,ejs,json,html --watch . --watch views --watch public --watch './**/*.ts' --exec ts-node app.ts",
     "build": "tsc",
-    "predeploy": "pnpm build && cp package.json dist/ && cd dist && mkdir public && cd public && mkdir uploads && cd ../.. && git add . && git commit -m \"dist created-3\"",
+    "predeploy": "rm -rf dist && pnpm build && cp package.json dist/ && cd dist && mkdir public && cd public && mkdir uploads && cd ../.. && cp -r  public/uploads dist/public/ && git add . && git commit -m \"dist created-4\"",
     "deploy": "git push -u origin main"
   },
   "keywords": [],
