@@ -68,6 +68,33 @@ export class RoomService {
         }
     };
 
+     static async getAllRooms() {
+        try {
+
+            let rooms = await Room.findAll({
+                include: [
+                    {
+                        model: Review,
+                        include: [
+                            {
+                                model: User,
+                                attributes: ["id", "username", "role"]
+                            }
+                        ]
+                    },
+                    {
+                        model: Hostel,
+                    }
+                ],
+                // raw:true
+            });
+
+            return rooms;
+        } catch (error) {
+            console.warn(error);
+        }
+    };
+
     static async getVendorRooms(userId: number, page: number = 1) {
         try {
             const offset = (page - 1) * limit

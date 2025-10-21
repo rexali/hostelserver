@@ -71,6 +71,32 @@ class RoomService {
         }
     }
     ;
+    static async getAllRooms() {
+        try {
+            let rooms = await room_model_1.default.findAll({
+                include: [
+                    {
+                        model: review_model_1.default,
+                        include: [
+                            {
+                                model: user_model_1.default,
+                                attributes: ["id", "username", "role"]
+                            }
+                        ]
+                    },
+                    {
+                        model: hostel_model_1.default,
+                    }
+                ],
+                // raw:true
+            });
+            return rooms;
+        }
+        catch (error) {
+            console.warn(error);
+        }
+    }
+    ;
     static async getVendorRooms(userId, page = 1) {
         try {
             const offset = (page - 1) * constants_1.limit;

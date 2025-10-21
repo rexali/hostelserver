@@ -11,19 +11,26 @@ const getRecommendedRooms_1 = require("../helpers/getRecommendedRooms");
 const recentlyBookedRooms_1 = require("../helpers/recentlyBookedRooms");
 const getFeaturedRooms_1 = require("../helpers/getFeaturedRooms");
 const room_model_1 = __importDefault(require("../models/room.model"));
+const favorite_model_1 = __importDefault(require("../../favourites/models/favorite.model"));
 async function getRoomsHandler(req, res, next) {
     try {
         const term = req.query?.term;
         const page = req.query?.page;
         const rooms = await room_controller_1.RoomService.getRooms(page);
         const roomCount = await room_model_1.default.count({ col: "id" });
+        let favRooms = await favorite_model_1.default.findAll({ attributes: ["RoomId", "UserId"] });
+        let data = rooms.map((room) => room.get({ plain: true }))?.map((room) => ({
+            ...room,
+            likes: favRooms.filter((rm) => rm.RoomId === room.id).map(rm => rm.UserId),
+            rating: room?.Reviews?.map((rm) => rm?.rating).reduce((prev, cur) => prev + cur, 0) / (room?.Reviews?.length ?? 0)
+        }));
         if (rooms !== null) {
             if (rooms?.length) {
                 res.status(200).json({
                     status: "success",
                     data: {
                         roomCount,
-                        rooms,
+                        rooms: data,
                         newRooms: await (0, getNewlyAddedRooms_1.getNewlyAddedRooms)(),
                         popularRooms: await (0, getPopularRooms_1.getPopularRooms)(),
                         recommendedRooms: await (0, getRecommendedRooms_1.getRecommendedRooms)(term),
